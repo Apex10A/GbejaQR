@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Shield, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -12,13 +13,7 @@ export function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
         {/* Logo */}
         <a href="#" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/15 border border-primary/25">
-            <Shield className="h-5 w-5 text-primary" />
-          </div>
-          <span className="text-xl font-bold tracking-tight text-foreground font-sans">
-            Cybergbeja
-          </span>
-        </a>
+        <Image src="/GbejaLogoWhite.png" alt="Cybergbeja Logo" width={150} height={150} />        </a>
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-8 lg:flex">
