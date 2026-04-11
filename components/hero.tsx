@@ -145,12 +145,12 @@ export function Hero({ onScanClick }: { onScanClick?: () => void }) {
               </span>
             </div>
 
-            <h1 className="mb-6 text-4xl font-bold leading-tight tracking-tight text-foreground lg:text-5xl xl:text-6xl font-sans text-balance">
+            <h1 className="mb-6 text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-5xl xl:text-6xl font-sans text-balance">
               Stay Safe Online.{" "}
               <span className="text-primary">Scan with Confidence.</span>
             </h1>
 
-            <p className="mb-8 max-w-xl text-base leading-relaxed text-muted-foreground mx-auto lg:mx-0 lg:text-lg">
+            <p className="mb-8 max-w-xl text-sm leading-relaxed text-muted-foreground mx-auto lg:mx-0 lg:text-lg sm:text-base">
               Cybergbeja is the trusted security layer between you and every QR code. We detect phishing, scams, malware, and fraudulent links before they can harm you.
             </p>
 
@@ -193,24 +193,24 @@ export function Hero({ onScanClick }: { onScanClick?: () => void }) {
         </div>
 
         {/* Trust metrics */}
-        <div className="mt-20 grid grid-cols-2 gap-6 rounded-2xl border border-border bg-card/50 p-8 lg:grid-cols-4 lg:gap-8">
+        <div className="mt-20 grid grid-cols-2 gap-4 sm:gap-6 rounded-2xl border border-border bg-card/50 p-6 sm:p-8 lg:grid-cols-4 lg:gap-8">
           <div className="text-center">
             <AnimatedCounter target={2400000} suffix="+" />
-            <p className="mt-1 text-sm text-muted-foreground">Scans Protected</p>
+            <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-medium">Scans Protected</p>
           </div>
           <div className="text-center">
             <AnimatedCounter target={180000} suffix="+" />
-            <p className="mt-1 text-sm text-muted-foreground">Threats Blocked</p>
+            <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-medium">Threats Blocked</p>
           </div>
           <div className="text-center">
             <AnimatedCounter target={34} />
-            <p className="mt-1 text-sm text-muted-foreground">African Countries</p>
+            <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-medium">African Countries</p>
           </div>
           <div className="text-center">
             <div className="text-2xl lg:text-3xl font-bold text-primary font-sans">
               {"<"}200ms
             </div>
-            <p className="mt-1 text-sm text-muted-foreground">Avg. Scan Time</p>
+            <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-medium">Avg. Scan Time</p>
           </div>
         </div>
       </div>

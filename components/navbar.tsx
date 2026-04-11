@@ -71,38 +71,40 @@ export function Navbar({ onScanClick }: { onScanClick?: () => void }) {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="flex flex-col gap-4 border-t border-border/50 bg-background px-4 py-6 lg:hidden">
-          <Link href="/#how-it-works" className="text-sm text-muted-foreground hover:text-primary" onClick={() => setMobileOpen(false)}>
+        <div className="flex flex-col gap-1 border-t border-border/50 bg-background px-4 py-6 lg:hidden shadow-xl animate-in slide-in-from-top duration-300">
+          <Link href="/#how-it-works" className="flex py-3 text-sm font-medium text-secondary hover:text-primary active:bg-zinc-100 rounded-lg px-2 transition-colors" onClick={() => setMobileOpen(false)}>
             How It Works
           </Link>
-          <Link href="/#scan-results" className="text-sm text-muted-foreground hover:text-primary" onClick={() => setMobileOpen(false)}>
+          <Link href="/#scan-results" className="flex py-3 text-sm font-medium text-secondary hover:text-primary active:bg-zinc-100 rounded-lg px-2 transition-colors" onClick={() => setMobileOpen(false)}>
             Scan Results
           </Link>
-          <Link href="/#features" className="text-sm text-muted-foreground hover:text-primary" onClick={() => setMobileOpen(false)}>
+          <Link href="/#features" className="flex py-3 text-sm font-medium text-secondary hover:text-primary active:bg-zinc-100 rounded-lg px-2 transition-colors" onClick={() => setMobileOpen(false)}>
             Features
           </Link>
-          <Link href="/#trust" className="text-sm text-muted-foreground hover:text-primary" onClick={() => setMobileOpen(false)}>
+          <Link href="/#trust" className="flex py-3 text-sm font-medium text-secondary hover:text-primary active:bg-zinc-100 rounded-lg px-2 transition-colors" onClick={() => setMobileOpen(false)}>
             Why Cybergbeja
           </Link>
+          <div className="pt-4">
           {onScanClick ? (
             <Button 
               onClick={() => {
                 handleScanClick()
                 setMobileOpen(false)
               }}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold mt-2"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold py-6 text-base"
             >
-              <Shield className="mr-2 h-4 w-4" />
+              <Shield className="mr-2 h-5 w-5" />
               Scan Now
             </Button>
           ) : (
             <Link href="/scan" onClick={() => setMobileOpen(false)}>
-              <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold mt-2">
-                <Shield className="mr-2 h-4 w-4" />
+              <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold py-6 text-base">
+                <Shield className="mr-2 h-5 w-5" />
                 Scan Now
               </Button>
             </Link>
           )}
+          </div>
         </div>
       )}
     </nav>

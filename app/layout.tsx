@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
+// import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 const _spaceGrotesk = Space_Grotesk({ subsets: ['latin'] })
@@ -30,11 +30,11 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#fff',
+  themeColor: '#fafafa',
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -46,7 +46,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-sans antialiased bg-zinc-50">
         {children}
-        <Analytics />
+        {/* <Analytics /> */}
       </body>
     </html>
   )

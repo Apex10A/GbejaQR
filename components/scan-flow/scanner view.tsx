@@ -12,14 +12,14 @@ export function ScannerView({ onScanned, onCancel, onUploadClick }: ScannerViewP
   const [scanning, setScanning] = useState(false)
 
   return (
-    <div className="flex min-h-[calc(100vh-80px)] flex-col bg-background">
+    <div className="flex min-h-[calc(100vh-80px)] flex-col bg-zinc-50">
       {/* Header bar removed as it's now a page */}
       
       {/* Title area */}
       <div className="px-5 pb-2 text-center pt-8">
-        <h2 className="text-2xl font-bold text-foreground font-sans">Scan QR Code</h2>
-        <p className="mt-2 text-sm text-muted-foreground leading-relaxed max-w-md mx-auto">
-          Align the QR code within the frame to scan. If you're on desktop, you can upload an image instead.
+        <h2 className="text-xl sm:text-2xl font-bold text-foreground font-sans">Scan QR Code</h2>
+        <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-md mx-auto">
+          Align the QR code within the frame to scan. If you{"'"}re on desktop, you can upload an image instead.
         </p>
       </div>
 
@@ -27,12 +27,12 @@ export function ScannerView({ onScanned, onCancel, onUploadClick }: ScannerViewP
       <div className="flex items-center justify-center gap-3 px-5 py-6">
         <button 
           onClick={onUploadClick}
-          className="flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-sm font-medium text-foreground transition-all hover:bg-primary/10 hover:border-primary/30"
+          className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 sm:px-6 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-primary/10 hover:border-primary/30 active:scale-95"
         >
           <Image className="h-4 w-4 text-primary" />
-          Upload Image
+          Upload
         </button>
-        <button className="flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-sm font-medium text-foreground transition-all hover:bg-card/80">
+        <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 sm:px-6 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-zinc-50 active:scale-95">
           <History className="h-4 w-4 text-primary" />
           History
         </button>
@@ -70,11 +70,11 @@ export function ScannerView({ onScanned, onCancel, onUploadClick }: ScannerViewP
       </div>
 
       {/* Bottom Action */}
-      <div className="px-5 pb-12 text-center">
+      <div className="px-5 pb-12 mt-auto text-center">
         <button
           onClick={onScanned}
           disabled={!scanning}
-          className={`px-10 py-4 rounded-xl font-bold transition-all ${scanning ? 'bg-primary text-white hover:bg-primary/90' : 'bg-muted text-muted-foreground cursor-not-allowed'}`}
+          className={`w-full max-w-sm px-10 py-5 rounded-xl font-bold transition-all text-base ${scanning ? 'bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/25 active:scale-95' : 'bg-zinc-200 text-muted-foreground cursor-not-allowed'}`}
         >
           Confirm Scan
         </button>
