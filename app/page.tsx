@@ -1,3 +1,5 @@
+"use client"
+
 import { Navbar } from "@/components/navbar"
 import { Hero } from "@/components/hero"
 import { HowItWorks } from "@/components/how-it-works"
@@ -8,9 +10,10 @@ import { Footer } from "@/components/footer"
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-background overflow-x-hidden">
+    <main className="min-h-screen overflow-x-hidden">
       <Navbar />
       <Hero />
+{/*       
       <div className="border-t border-border">
         <HowItWorks />
       </div>
@@ -23,7 +26,7 @@ export default function Page() {
       <div className="border-t border-border">
         <Trust />
       </div>
-      <Footer />
+      <Footer /> */}
     </main>
   )
 }
