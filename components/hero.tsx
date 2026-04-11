@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react"
 import { Shield, ShieldCheck, Camera, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import Image from "next/image"
 
 function PhoneMockup() {
   return (
@@ -13,10 +15,7 @@ function PhoneMockup() {
         <div className="relative overflow-hidden rounded-[2rem] bg-background">
           {/* Status bar */}
           <div className="flex items-center justify-between px-6 pt-4 pb-2">
-            <div className="flex items-center gap-1.5">
-              <Shield className="h-4 w-4 text-primary" />
-              <span className="text-xs font-semibold text-foreground font-sans">Cybergbeja</span>
-            </div>
+            <Image src="/GbejaLogoWhite.png" alt="Cybergbeja Logo" width={55} height={55} />
             <div className="flex items-center gap-1">
               <div className="h-1.5 w-1.5 rounded-full bg-safe" />
               <span className="text-[10px] text-muted-foreground">Secure</span>
@@ -126,9 +125,9 @@ function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: str
   )
 }
 
-export function Hero() {
+export function Hero({ onScanClick }: { onScanClick?: () => void }) {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden pt-20">
+    <section className="relative min-h-screen flex items-center overflow-hidden pt-24 lg:pt-20">
       {/* Background effects */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full bg-primary/5 blur-[120px]" />
@@ -156,13 +155,26 @@ export function Hero() {
             </p>
 
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
-              <Button
-                size="lg"
-                className="bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold text-base px-8 py-6 animate-glow-blue"
-              >
-                <Camera className="mr-2 h-5 w-5" />
-                Start Scanning
-              </Button>
+              {onScanClick ? (
+                <Button
+                  size="lg"
+                  onClick={onScanClick}
+                  className="bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold text-base px-8 py-6 animate-glow-blue cursor-pointer"
+                >
+                  <Camera className="mr-2 h-5 w-5" />
+                  Start Scanning
+                </Button>
+              ) : (
+                <Link href="/scan">
+                  <Button
+                    size="lg"
+                    className="bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold text-base px-8 py-6 animate-glow-blue cursor-pointer"
+                  >
+                    <Camera className="mr-2 h-5 w-5" />
+                    Start Scanning
+                  </Button>
+                </Link>
+              )}
               <Button
                 size="lg"
                 variant="outline"

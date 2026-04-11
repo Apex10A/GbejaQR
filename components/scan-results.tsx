@@ -243,7 +243,7 @@ export function ScanResults() {
     <section id="scan-results" ref={ref} className="relative py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <span className="mb-4 inline-block text-xs font-medium uppercase tracking-widest text-primary font-mono">
+          <span className="     mb-4 inline-block text-xs font-medium uppercase tracking-widest text-primary font-mono">
             What You See
           </span>
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground lg:text-4xl font-sans text-balance">
