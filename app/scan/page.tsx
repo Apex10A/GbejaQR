@@ -6,17 +6,53 @@ import { Navbar } from "@/components/navbar"
 import { SafetyTips } from "@/components/scan-flow/safety-tips"
 import { ScannerView } from "@/components/scan-flow/scanner view"
 import { VerifyingView } from "@/components/scan-flow/verifiying-view"
-import { VerifiedResult } from "@/components/scan-flow/result-views"
+import { 
+  VerifiedResult, 
+  SuspiciousResult, 
+  MaliciousResult, 
+  UnsafeResult 
+} from "@/components/scan-flow/result-views"
 import { UploadView } from "@/components/scan-flow/upload-view"
 import { Footer } from "@/components/footer"
+import { type ScanResult, verifyUrl } from "@/lib/security"
 
 type ScanStep = "safety-tips" | "scanner" | "upload" | "verifying" | "result"
 
 export default function ScanPage() {
   const [step, setStep] = useState<ScanStep>("safety-tips")
+  const [scannedUrl, setScannedUrl] = useState<string>("")
+  const [scanResult, setScanResult] = useState<ScanResult | null>(null)
   const router = useRouter()
 
   const goToHome = () => router.push("/")
+
+  const handleScanned = (url: string) => {
+    setScannedUrl(url)
+    setStep("verifying")
+  }
+
+  const handleVerified = () => {
+    const result = verifyUrl(scannedUrl)
+    setScanResult(result)
+    setStep("result")
+  }
+
+  const renderResult = () => {
+    if (!scanResult) return null
+
+    switch (scanResult.status) {
+      case "verified":
+        return <VerifiedResult result={scanResult} onClose={goToHome} />
+      case "suspicious":
+        return <SuspiciousResult result={scanResult} onClose={goToHome} />
+      case "malicious":
+        return <MaliciousResult result={scanResult} onClose={goToHome} />
+      case "unsafe":
+        return <UnsafeResult result={scanResult} onClose={goToHome} />
+      default:
+        return <VerifiedResult result={scanResult} onClose={goToHome} />
+    }
+  }
 
   return (
     <main className="min-h-screen bg-white flex flex-col">
@@ -30,26 +66,24 @@ export default function ScanPage() {
           )}
           {step === "scanner" && (
             <ScannerView 
-                onScanned={() => setStep("verifying")} 
+                onScanned={handleScanned} 
                 onCancel={goToHome} 
                 onUploadClick={() => setStep("upload")}
             />
           )}
           {step === "upload" && (
             <UploadView 
-                onUploaded={() => setStep("verifying")} 
+                onUploaded={handleScanned} 
                 onCancel={() => setStep("scanner")} 
             />
           )}
           {step === "verifying" && (
             <VerifyingView 
-                onVerified={() => setStep("result")} 
+                onVerified={handleVerified} 
                 onCancel={() => setStep("scanner")} 
             />
           )}
-          {step === "result" && (
-            <VerifiedResult onClose={goToHome} />
-          )}
+          {step === "result" && renderResult()}
         </div>
       </div>
 

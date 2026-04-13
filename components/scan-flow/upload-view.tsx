@@ -5,7 +5,7 @@ import { Upload, Image, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 interface UploadViewProps {
-  onUploaded: () => void
+  onUploaded: (url: string) => void
   onCancel: () => void
 }
 
@@ -97,7 +97,11 @@ export function UploadView({ onUploaded, onCancel }: UploadViewProps) {
                   <Button
                     onClick={(e) => {
                       e.stopPropagation()
-                      onUploaded()
+                      // For demo, if filename contains "phish" or "malicious", use that URL
+                      let url = "https://google.com"
+                      if (fileName.toLowerCase().includes("phish")) url = "https://phish-login.com"
+                      if (fileName.toLowerCase().includes("bank")) url = "https://bank-secure.xyz"
+                      onUploaded(url)
                     }}
                     className="mt-6 bg-primary text-white hover:bg-primary/90 font-sans w-full py-6"
                   >

@@ -4,7 +4,8 @@ import { useState } from "react"
 import { SafetyTips } from "./safety-tips"
 import { ScannerView } from "./scanner view"
 import { VerifyingView } from "./verifiying-view"
-import { VerifiedResult } from "./result-views"
+import { VerifiedResult, SuspiciousResult, MaliciousResult, UnsafeResult } from "./result-views"
+import { verifyUrl, type ScanResult } from "@/lib/security"
 
 export type ScanStep = "safety-tips" | "scanner" | "verifying" | "result"
 
@@ -14,10 +15,16 @@ interface ScanFlowProps {
 
 export function ScanFlow({ onClose }: ScanFlowProps) {
   const [step, setStep] = useState<ScanStep>("safety-tips")
+  const [scanResult, setScanResult] = useState<ScanResult | null>(null)
+
+  const handleScanned = (url: string) => {
+    const result = verifyUrl(url)
+    setScanResult(result)
+    setStep("verifying")
+  }
 
   const handleNext = () => {
     if (step === "safety-tips") setStep("scanner")
-    else if (step === "scanner") setStep("verifying")
     else if (step === "verifying") setStep("result")
   }
 
@@ -28,15 +35,21 @@ export function ScanFlow({ onClose }: ScanFlowProps) {
           <SafetyTips onContinue={handleNext} />
         )}
         {step === "scanner" && (
-          <ScannerView onScanned={handleNext} onCancel={onClose} />
+          <ScannerView onScanned={handleScanned} onCancel={onClose} />
         )}
         {step === "verifying" && (
           <VerifyingView onVerified={handleNext} onCancel={onClose} />
         )}
-        {step === "result" && (
-          <VerifiedResult onClose={onClose} />
+        {step === "result" && scanResult && (
+          <>
+            {scanResult.status === "verified" && <VerifiedResult result={scanResult} onClose={onClose} />}
+            {scanResult.status === "suspicious" && <SuspiciousResult result={scanResult} onClose={onClose} />}
+            {scanResult.status === "malicious" && <MaliciousResult result={scanResult} onClose={onClose} />}
+            {scanResult.status === "unsafe" && <UnsafeResult result={scanResult} onClose={onClose} />}
+          </>
         )}
       </div>
     </div>
   )
 }
+
