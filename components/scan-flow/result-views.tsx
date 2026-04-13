@@ -15,14 +15,17 @@ import { Button } from "@/components/ui/button"
 
 export type ResultType = "verified" | "suspicious" | "malicious" | "unsafe"
 
+import { type ScanResult } from "@/lib/security"
+
 interface ResultProps {
   onClose: () => void
+  result: ScanResult
 }
 
-const MOCK_URL = "https://secure-portal.verified-pu..."
-
 // ===== VERIFIED =====
-export function VerifiedResult({ onClose }: ResultProps) {
+export function VerifiedResult({ onClose, result }: ResultProps) {
+  if (!result) return null
+
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-8 bg-zinc-50">
       <div className="w-full max-w-md">
@@ -43,16 +46,17 @@ export function VerifiedResult({ onClose }: ResultProps) {
           <div className="flex items-center justify-center px-6 py-5">
             <div className="flex items-center gap-3 rounded-xl bg-zinc-50 border border-border px-4 py-3.5 w-full">
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7B5EA7] text-white text-sm font-bold font-sans">
-                P
+                {result.publisher?.[0] || "P"}
               </div>
               <div className="flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-safe" />
                 <span className="text-[13px] font-semibold text-foreground font-sans leading-tight">
-                  Publisher Identity Confirmed
+                  {result.publisher || "Publisher"} Identity Confirmed
                 </span>
               </div>
             </div>
           </div>
+
 
           {/* Destination URL */}
           <div className="px-6 pb-2">
@@ -60,10 +64,11 @@ export function VerifiedResult({ onClose }: ResultProps) {
               <Link2 className="h-4 w-4 shrink-0 text-muted-foreground" />
               <div className="min-w-0">
                 <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-bold mb-0.5">Destination URL</p>
-                <p className="text-sm text-foreground font-mono truncate">{MOCK_URL}</p>
+                <p className="text-sm text-foreground font-mono truncate">{result.url}</p>
               </div>
             </div>
           </div>
+
 
           {/* Security tip */}
           <div className="px-6 py-4">
@@ -102,7 +107,7 @@ export function VerifiedResult({ onClose }: ResultProps) {
 }
 
 // ===== SUSPICIOUS =====
-export function SuspiciousResult({ onClose }: ResultProps) {
+export function SuspiciousResult({ onClose, result }: ResultProps) {
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
@@ -140,10 +145,11 @@ export function SuspiciousResult({ onClose }: ResultProps) {
               <Link2 className="h-4 w-4 shrink-0 text-muted-foreground" />
               <div>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-mono">Destination URL</p>
-                <p className="text-sm text-foreground font-mono">{MOCK_URL}</p>
+                <p className="text-sm text-foreground font-mono truncate">{result.url}</p>
               </div>
             </div>
           </div>
+
 
           {/* Actions */}
           <div className="flex flex-col gap-3 px-6 pb-6">
@@ -169,7 +175,7 @@ export function SuspiciousResult({ onClose }: ResultProps) {
 }
 
 // ===== MALICIOUS =====
-export function MaliciousResult({ onClose }: ResultProps) {
+export function MaliciousResult({ onClose, result }: ResultProps) {
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
@@ -214,7 +220,7 @@ export function MaliciousResult({ onClose }: ResultProps) {
                   {[1, 2, 3, 4, 5].map((i) => (
                     <div
                       key={i}
-                      className="h-2 flex-1 rounded-full bg-destructive"
+                      className={`h-2 flex-1 rounded-full ${i <= (result.threatLevel || 0) ? 'bg-destructive' : 'bg-zinc-200'}`}
                     />
                   ))}
                 </div>
@@ -222,7 +228,7 @@ export function MaliciousResult({ onClose }: ResultProps) {
               <div>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">Threat Type</p>
                 <p className="text-sm font-semibold text-foreground font-sans">
-                  Phishing/Credential Harvest
+                  {result.threatType}
                 </p>
               </div>
             </div>
@@ -234,10 +240,11 @@ export function MaliciousResult({ onClose }: ResultProps) {
               <Link2 className="h-4 w-4 shrink-0 text-muted-foreground" />
               <div>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-mono">Destination URL</p>
-                <p className="text-sm text-foreground font-mono">{MOCK_URL}</p>
+                <p className="text-sm text-foreground font-mono truncate">{result.url}</p>
               </div>
             </div>
           </div>
+
 
           {/* Action */}
           <div className="px-6 pb-6">
@@ -256,7 +263,7 @@ export function MaliciousResult({ onClose }: ResultProps) {
 }
 
 // ===== UNSAFE =====
-export function UnsafeResult({ onClose }: ResultProps) {
+export function UnsafeResult({ onClose, result }: ResultProps) {
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
@@ -287,10 +294,11 @@ export function UnsafeResult({ onClose }: ResultProps) {
               <Link2 className="h-4 w-4 shrink-0 text-muted-foreground" />
               <div>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-mono">Destination URL</p>
-                <p className="text-sm text-foreground font-mono">{MOCK_URL}</p>
+                <p className="text-sm text-foreground font-mono truncate">{result.url}</p>
               </div>
             </div>
           </div>
+
 
           {/* Description */}
           <div className="px-6 pb-5">
