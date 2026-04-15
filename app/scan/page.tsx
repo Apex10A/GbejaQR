@@ -10,7 +10,8 @@ import {
   VerifiedResult, 
   SuspiciousResult, 
   MaliciousResult, 
-  UnsafeResult 
+  UnsafeResult,
+  ErrorResult 
 } from "@/components/scan-flow/result-views"
 import { UploadView } from "@/components/scan-flow/upload-view"
 import { Footer } from "@/components/footer"
@@ -53,6 +54,8 @@ export default function ScanPage() {
         return <MaliciousResult result={scanResult} onClose={goToHome} />
       case "unsafe":
         return <UnsafeResult result={scanResult} onClose={goToHome} />
+      case "error":
+        return <ErrorResult result={scanResult} onClose={() => setStep("scanner")} />
       default:
         return <VerifiedResult result={scanResult} onClose={goToHome} />
     }
