@@ -72,7 +72,7 @@ export async function verifyUrl(url: string): Promise<ScanResult> {
       status: "error",
       is_safe: false,
       safety_score: 0,
-      advice: "Failed to connect to security engine. Please check your internet connection.",
+      advice: "Failed to connect to security engine. Please try again.",
       threatType: "Connection Error",
     }
   }
