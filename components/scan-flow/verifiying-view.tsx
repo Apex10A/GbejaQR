@@ -61,14 +61,14 @@ export function VerifyingView({ onVerified, onCancel, isReady }: VerifyingViewPr
               disabled={!isReady}
               className={`${isReady ? 'bg-primary' : 'bg-zinc-200'} text-white hover:bg-primary/90 font-sans w-full py-7 text-base shadow-lg shadow-primary/20 active:scale-[0.98] transition-all`}
             >
-              {isReady ? "View Results" : "Please wait..."}
+              {isReady ? "Redirecting..." : "Please wait..."}
             </Button>
             <Button
               variant="outline"
               onClick={onCancel}
               className="border-border text-foreground hover:bg-zinc-50 font-sans w-full py-7 text-base active:scale-[0.98]"
             >
-              <Shield className="mr-2 h-4 w-4 text-muted-foreground" />
+              {/* <Shield className="mr-2 h-4 w-4 text-muted-foreground" /> */}
               Cancel Request
             </Button>
           </div>

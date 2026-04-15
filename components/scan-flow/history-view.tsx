@@ -1,9 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Shield, ShieldCheck, ShieldAlert, ShieldX, Clock, ChevronRight, ArrowLeft } from "lucide-react"
+import { Shield, ShieldCheck, ShieldAlert, ShieldX, Clock, ChevronRight, ArrowLeft, ChevronLeft } from "lucide-react"
 import { getHistory, type ScanHistoryItem } from "@/lib/security"
 import { Button } from "@/components/ui/button"
+
+const ITEMS_PER_PAGE = 15
 
 interface HistoryViewProps {
   onBack: () => void
@@ -13,6 +15,7 @@ interface HistoryViewProps {
 export function HistoryView({ onBack, onItemClick }: HistoryViewProps) {
   const [history, setHistory] = useState<ScanHistoryItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
     async function fetchHistory() {
@@ -22,6 +25,10 @@ export function HistoryView({ onBack, onItemClick }: HistoryViewProps) {
     }
     fetchHistory()
   }, [])
+
+  const totalPages = Math.ceil(history.length / ITEMS_PER_PAGE)
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+  const paginatedHistory = history.slice(startIndex, startIndex + ITEMS_PER_PAGE)
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -61,33 +68,63 @@ export function HistoryView({ onBack, onItemClick }: HistoryViewProps) {
             <p className="text-sm text-muted-foreground mt-1">Your recent scans will appear here.</p>
           </div>
         ) : (
-          <div className="space-y-3">
-            {history.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => onItemClick(item)}
-                className="w-full flex items-center gap-4 p-4 rounded-xl bg-white border border-border hover:border-primary/30 hover:shadow-md transition-all text-left"
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-zinc-50 border border-border">
-                  {getStatusIcon(item.status)}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-foreground truncate">{item.url}</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className={`text-[10px] font-bold uppercase tracking-wider ${
-                      item.status === 'verified' ? 'text-safe' : 
-                      item.status === 'suspicious' ? 'text-warning' : 'text-destructive'
-                    }`}>
-                      {item.status}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground font-mono">
-                      {new Date(item.scanned_at).toLocaleDateString()}
-                    </span>
+          <div className="flex flex-col h-full">
+            <div className="space-y-3 flex-1">
+              {paginatedHistory.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => onItemClick(item)}
+                  className="w-full flex items-center gap-4 p-4 rounded-xl bg-white border border-border hover:border-primary/30 hover:shadow-md transition-all text-left"
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-zinc-50 border border-border">
+                    {getStatusIcon(item.status)}
                   </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-foreground truncate">{item.url}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className={`text-[10px] font-bold uppercase tracking-wider ${
+                        item.status === 'verified' ? 'text-safe' : 
+                        item.status === 'suspicious' ? 'text-warning' : 'text-destructive'
+                      }`}>
+                        {item.status}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground font-mono">
+                        {new Date(item.scanned_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-5 w-5 text-muted-foreground shrink-0" />
+                </button>
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between mt-8 pt-6 border-t border-border">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="gap-1"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  Previous
+                </Button>
+                <div className="text-sm font-medium text-muted-foreground">
+                  Page {currentPage} of {totalPages}
                 </div>
-                <ChevronRight className="h-5 w-5 text-muted-foreground shrink-0" />
-              </button>
-            ))}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="gap-1"
+                >
+                  Next
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>
