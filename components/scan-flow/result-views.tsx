@@ -344,7 +344,7 @@ export function ErrorResult({ onClose, result }: ResultProps) {
           {/* Error area */}
           <div className="bg-destructive/5 px-6 py-10 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10 border-2 border-destructive/20">
-              <ShieldX className="h-8 w-8 text-destructive" />
+              {/* <ShieldX className="h-8 w-8 text-destructive" /> */}
             </div>
             <h2 className="text-2xl font-bold text-foreground font-sans tracking-tight">Scan Error</h2>
             <p className="mt-1.5 text-[10px] font-bold text-destructive uppercase tracking-[0.2em]">
@@ -359,7 +359,7 @@ export function ErrorResult({ onClose, result }: ResultProps) {
               <div>
                 <p className="text-xs font-bold text-foreground font-sans uppercase tracking-wider">Error Details</p>
                 <p className="mt-1 text-[11px] text-muted-foreground leading-relaxed">
-                  {result.advice || "An unexpected error occurred while analyzing the URL. Please ensure the API endpoint is accessible and try again."}
+                  {result.advice || "An unexpected error occurred while analyzing the URL. Please try again."}
                 </p>
               </div>
             </div>
