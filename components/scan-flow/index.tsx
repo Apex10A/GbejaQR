@@ -4,7 +4,7 @@ import { useState } from "react"
 import { SafetyTips } from "./safety-tips"
 import { ScannerView } from "./scanner view"
 import { VerifyingView } from "./verifiying-view"
-import { VerifiedResult, SuspiciousResult, MaliciousResult, UnsafeResult } from "./result-views"
+import { VerifiedResult, SuspiciousResult, MaliciousResult, UnsafeResult, ErrorResult } from "./result-views"
 import { verifyUrl, type ScanResult } from "@/lib/security"
 
 export type ScanStep = "safety-tips" | "scanner" | "verifying" | "result"
@@ -52,6 +52,7 @@ export function ScanFlow({ onClose }: ScanFlowProps) {
             {scanResult.status === "suspicious" && <SuspiciousResult result={scanResult} onClose={onClose} />}
             {scanResult.status === "malicious" && <MaliciousResult result={scanResult} onClose={onClose} />}
             {scanResult.status === "unsafe" && <UnsafeResult result={scanResult} onClose={onClose} />}
+            {scanResult.status === "error" && <ErrorResult result={scanResult} onClose={() => setStep("scanner")} />}
           </>
         )}
       </div>

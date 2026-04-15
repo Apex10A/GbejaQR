@@ -1,4 +1,4 @@
-export type SecurityStatus = "verified" | "suspicious" | "malicious" | "unsafe"
+export type SecurityStatus = "verified" | "suspicious" | "malicious" | "unsafe" | "error"
 
 export interface ScanResult {
   url: string
@@ -69,7 +69,7 @@ export async function verifyUrl(url: string): Promise<ScanResult> {
     console.error("Scan error details:", e);
     return {
       url,
-      status: "unsafe",
+      status: "error",
       is_safe: false,
       safety_score: 0,
       advice: "Failed to connect to security engine. Please check your internet connection.",

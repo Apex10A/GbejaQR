@@ -13,7 +13,7 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-export type ResultType = "verified" | "suspicious" | "malicious" | "unsafe"
+export type ResultType = "verified" | "suspicious" | "malicious" | "unsafe" | "error"
 
 import { type ScanResult } from "@/lib/security"
 
@@ -327,6 +327,69 @@ export function UnsafeResult({ onClose, result }: ResultProps) {
               onClick={onClose}
             >
               I understand the risk, let{"'"}s me through
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ===== ERROR =====
+export function ErrorResult({ onClose, result }: ResultProps) {
+  return (
+    <div className="flex min-h-screen items-center justify-center px-4 py-8 bg-zinc-50">
+      <div className="w-full max-w-md">
+        <div className="overflow-hidden rounded-2xl border border-destructive/20 bg-white shadow-sm">
+          {/* Error area */}
+          <div className="bg-destructive/5 px-6 py-10 text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10 border-2 border-destructive/20">
+              <ShieldX className="h-8 w-8 text-destructive" />
+            </div>
+            <h2 className="text-2xl font-bold text-foreground font-sans tracking-tight">Scan Error</h2>
+            <p className="mt-1.5 text-[10px] font-bold text-destructive uppercase tracking-[0.2em]">
+              Request Failed
+            </p>
+          </div>
+
+          {/* Error Message */}
+          <div className="px-6 py-8">
+            <div className="flex items-start gap-3 rounded-xl bg-destructive/5 border border-destructive/10 px-4 py-4">
+              <AlertTriangle className="h-5 w-5 shrink-0 text-destructive mt-0.5" />
+              <div>
+                <p className="text-xs font-bold text-foreground font-sans uppercase tracking-wider">Error Details</p>
+                <p className="mt-1 text-[11px] text-muted-foreground leading-relaxed">
+                  {result.advice || "An unexpected error occurred while analyzing the URL. Please ensure the API endpoint is accessible and try again."}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* URL */}
+          <div className="px-6 pb-6">
+            <div className="flex items-center gap-2.5 rounded-xl bg-zinc-50 border border-border px-4 py-3.5">
+              <Link2 className="h-4 w-4 shrink-0 text-muted-foreground" />
+              <div className="min-w-0">
+                <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-bold mb-0.5">Attempted URL</p>
+                <p className="text-sm text-foreground font-mono truncate">{result.url}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex flex-col gap-3 px-6 pb-6 pt-2">
+            <Button
+              className="w-full bg-primary text-white hover:bg-primary/90 font-sans font-bold py-7 text-base shadow-lg shadow-primary/20 active:scale-[0.98]"
+              onClick={onClose}
+            >
+              Try Again
+            </Button>
+            <Button
+              variant="ghost"
+              className="w-full text-muted-foreground hover:text-foreground font-sans py-6 text-sm active:scale-[0.98]"
+              onClick={onClose}
+            >
+              Go Back
             </Button>
           </div>
         </div>
