@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Shield, Camera, Image, History, AlertCircle } from "lucide-react"
+import jsQR from "jsqr"
 
 interface ScannerViewProps {
   onScanned: (url: string) => void
@@ -11,6 +12,7 @@ interface ScannerViewProps {
 export function ScannerView({ onScanned, onCancel, onUploadClick }: ScannerViewProps & { onUploadClick?: () => void }) {
   const [scanning, setScanning] = useState(false)
   const [demoUrl, setDemoUrl] = useState("")
+  const streamRef = useRef<MediaStream | null>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [hasCamera, setHasCamera] = useState(false)
   const [cameraError, setCameraError] = useState<string | null>(null)
@@ -21,9 +23,10 @@ export function ScannerView({ onScanned, onCancel, onUploadClick }: ScannerViewP
         const stream = await navigator.mediaDevices.getUserMedia({ 
           video: { facingMode: "environment" } 
         })
+        streamRef.current = stream
+        setHasCamera(true)
         if (videoRef.current) {
           videoRef.current.srcObject = stream
-          setHasCamera(true)
         }
       } catch (err) {
         console.error("Error accessing camera:", err)
@@ -34,26 +37,71 @@ export function ScannerView({ onScanned, onCancel, onUploadClick }: ScannerViewP
     startCamera()
 
     return () => {
-      if (videoRef.current?.srcObject) {
-        const tracks = (videoRef.current.srcObject as MediaStream).getTracks()
-        tracks.forEach(track => track.stop())
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop())
       }
     }
   }, [])
 
+  // Rerender when hasCamera becomes true to attach the stream to the video element
+  useEffect(() => {
+    if (hasCamera && videoRef.current && streamRef.current && !videoRef.current.srcObject) {
+      videoRef.current.srcObject = streamRef.current
+    }
+  }, [hasCamera])
+
+  // QR Code Scanning Loop
+  useEffect(() => {
+    if (!hasCamera) return
+
+    let animationFrameId: number
+    const canvas = document.createElement("canvas")
+    const context = canvas.getContext("2d", { willReadFrequently: true })
+
+    const scanQRCode = () => {
+      if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
+        canvas.width = videoRef.current.videoWidth
+        canvas.height = videoRef.current.videoHeight
+        
+        if (context) {
+          context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height)
+          const imageData = context.getImageData(0, 0, canvas.width, canvas.height)
+          const code = jsQR(imageData.data, imageData.width, imageData.height, {
+            inversionAttempts: "dontInvert",
+          })
+
+          if (code && code.data) {
+            console.log("Found QR code:", code.data)
+            // Visual feedback - set scanning to true for a moment if not already
+            setScanning(true)
+            
+            // Validate it's a URL (basic check)
+            if (code.data.startsWith("http://") || code.data.startsWith("https://")) {
+              onScanned(code.data)
+              return // Stop scanning after find
+            }
+          }
+        }
+      }
+      animationFrameId = requestAnimationFrame(scanQRCode)
+    }
+
+    // Start the loop
+    animationFrameId = requestAnimationFrame(scanQRCode)
+
+    return () => {
+      cancelAnimationFrame(animationFrameId)
+    }
+  }, [hasCamera, onScanned])
+
   return (
     <div className="flex min-h-[calc(100vh-80px)] flex-col bg-zinc-50">
-      {/* Header bar removed as it's now a page */}
-      
-      {/* Title area */}
       <div className="px-5 pb-2 text-center pt-8">
         <h2 className="text-xl sm:text-2xl font-bold text-foreground font-sans">Scan QR Code</h2>
         <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-md mx-auto">
-          Align the QR code within the frame to scan. For this demo, you can also enter a URL below to test the security engine.
+          Align the QR code within the frame to scan. You can also enter a URL below to test the security engine.
         </p>
       </div>
-
-      {/* Action buttons */}
       <div className="flex items-center justify-center gap-3 px-5 py-6">
         <button 
           onClick={onUploadClick}
@@ -68,7 +116,6 @@ export function ScannerView({ onScanned, onCancel, onUploadClick }: ScannerViewP
         </button>
       </div>
 
-      {/* Viewfinder area */}
       <div className="flex flex-1 items-center justify-center px-8 py-6">
         <div className="relative aspect-square w-full max-w-[320px] overflow-hidden rounded-2xl bg-black shadow-xl">
           {/* Camera Feed */}
@@ -116,10 +163,9 @@ export function ScannerView({ onScanned, onCancel, onUploadClick }: ScannerViewP
         </div>
       </div>
 
-      {/* Demo URL Input */}
       <div className="px-5 py-4 max-w-sm mx-auto w-full">
         <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2 block">
-          Enter URL to Test (Security Engine)
+          Enter URL (Security Engine)
         </label>
         <div className="relative">
           <input 
@@ -129,24 +175,9 @@ export function ScannerView({ onScanned, onCancel, onUploadClick }: ScannerViewP
             placeholder="https://example.com"
             className="w-full px-4 py-3 bg-white border border-border rounded-xl text-sm font-mono focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all shadow-sm"
           />
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
-             <button 
-              onClick={() => setDemoUrl("https://phish-login.com")}
-              className="text-[9px] bg-destructive/10 text-destructive px-2 py-1 rounded hover:bg-destructive/20"
-             >
-              Phish
-             </button>
-             <button 
-              onClick={() => setDemoUrl("https://bank-secure.xyz")}
-              className="text-[9px] bg-warning/10 text-warning px-2 py-1 rounded hover:bg-warning/20"
-             >
-              Susp
-             </button>
-          </div>
         </div>
       </div>
 
-      {/* Bottom Action */}
       <div className="px-5 pb-12 mt-auto text-center">
         <button
           onClick={() => onScanned(demoUrl)}
