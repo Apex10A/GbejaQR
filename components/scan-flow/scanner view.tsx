@@ -10,7 +10,7 @@ interface ScannerViewProps {
 
 export function ScannerView({ onScanned, onCancel, onUploadClick }: ScannerViewProps & { onUploadClick?: () => void }) {
   const [scanning, setScanning] = useState(false)
-  const [demoUrl, setDemoUrl] = useState("https://google.com")
+  const [demoUrl, setDemoUrl] = useState("")
   const videoRef = useRef<HTMLVideoElement>(null)
   const [hasCamera, setHasCamera] = useState(false)
   const [cameraError, setCameraError] = useState<string | null>(null)
@@ -107,7 +107,6 @@ export function ScannerView({ onScanned, onCancel, onUploadClick }: ScannerViewP
             className="absolute inset-6 rounded-lg bg-primary/5 cursor-pointer flex items-center justify-center group z-10"
             onClick={() => setScanning(!scanning)}
           >
-            {!scanning && <span className="text-xs text-white bg-black/50 px-3 py-1.5 rounded-full font-medium opacity-0 group-hover:opacity-100 transition-opacity">Click to simulate scan</span>}
           </div>
 
           {/* Scanning line */}

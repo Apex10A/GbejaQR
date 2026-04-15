@@ -71,14 +71,14 @@ function PhoneMockup() {
       </div>
 
       {/* Floating badges */}
-      <div className="absolute -left-4 top-1/4 rounded-lg bg-safe/15 border border-safe/25 px-3 py-2 animate-float">
+      <div className="absolute -left-4 top-1/4 rounded-lg bg-safe/15 border border-safe/25 px-3 py-2 ">
         <div className="flex items-center gap-2">
           <ShieldCheck className="h-4 w-4 text-safe" />
           <span className="text-xs font-medium text-safe">Link Verified</span>
         </div>
       </div>
 
-      <div className="absolute -right-4 top-2/3 rounded-lg bg-destructive/15 border border-destructive/25 px-3 py-2 animate-float" style={{ animationDelay: "1.5s" }}>
+      <div className="absolute -right-4 top-2/3 rounded-lg bg-destructive/15 border border-destructive/25 px-3 py-2 " style={{ animationDelay: "1.5s" }}>
         <div className="flex items-center gap-2">
           <Shield className="h-4 w-4 text-destructive" />
           <span className="text-xs font-medium text-destructive">Threat Blocked</span>
@@ -175,14 +175,14 @@ export function Hero({ onScanClick }: { onScanClick?: () => void }) {
                   </Button>
                 </Link>
               )}
-              <Button
+              {/* <Button
                 size="lg"
                 variant="outline"
                 className="border-primary/30 text-foreground hover:bg-primary/10 hover:border-primary/50 font-sans text-base px-8 py-6"
               >
                 Learn More
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+              </Button> */}
             </div>
           </div>
 
@@ -195,15 +195,15 @@ export function Hero({ onScanClick }: { onScanClick?: () => void }) {
         {/* Trust metrics */}
         <div className="mt-20 grid grid-cols-2 gap-4 sm:gap-6 rounded-2xl border border-border bg-card/50 p-6 sm:p-8 lg:grid-cols-4 lg:gap-8">
           <div className="text-center">
-            <AnimatedCounter target={2400000} suffix="+" />
+            <AnimatedCounter target={0} suffix="+" />
             <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-medium">Scans Protected</p>
           </div>
           <div className="text-center">
-            <AnimatedCounter target={180000} suffix="+" />
+            <AnimatedCounter target={0} suffix="+" />
             <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-medium">Threats Blocked</p>
           </div>
           <div className="text-center">
-            <AnimatedCounter target={34} />
+            <AnimatedCounter target={0} />
             <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-medium">African Countries</p>
           </div>
           <div className="text-center">
