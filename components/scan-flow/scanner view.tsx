@@ -7,9 +7,11 @@ import jsQR from "jsqr"
 interface ScannerViewProps {
   onScanned: (url: string) => void
   onCancel: () => void
+  onUploadClick?: () => void
+  onHistoryClick?: () => void
 }
 
-export function ScannerView({ onScanned, onCancel, onUploadClick }: ScannerViewProps & { onUploadClick?: () => void }) {
+export function ScannerView({ onScanned, onCancel, onUploadClick, onHistoryClick }: ScannerViewProps) {
   const [scanning, setScanning] = useState(false)
   const [demoUrl, setDemoUrl] = useState("")
   const streamRef = useRef<MediaStream | null>(null)
@@ -110,7 +112,10 @@ export function ScannerView({ onScanned, onCancel, onUploadClick }: ScannerViewP
           <Image className="h-4 w-4 text-primary" />
           Upload
         </button>
-        <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 sm:px-6 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-zinc-50 active:scale-95">
+        <button 
+          onClick={onHistoryClick}
+          className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 sm:px-6 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-zinc-50 active:scale-95"
+        >
           <History className="h-4 w-4 text-primary" />
           History
         </button>

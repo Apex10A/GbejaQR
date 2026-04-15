@@ -4,10 +4,11 @@ import { useState } from "react"
 import { SafetyTips } from "./safety-tips"
 import { ScannerView } from "./scanner view"
 import { VerifyingView } from "./verifiying-view"
+import { HistoryView } from "./history-view"
 import { VerifiedResult, SuspiciousResult, MaliciousResult, UnsafeResult, ErrorResult } from "./result-views"
-import { verifyUrl, type ScanResult } from "@/lib/security"
+import { verifyUrl, type ScanResult, type ScanHistoryItem } from "@/lib/security"
 
-export type ScanStep = "safety-tips" | "scanner" | "verifying" | "result"
+export type ScanStep = "safety-tips" | "scanner" | "verifying" | "result" | "history"
 
 interface ScanFlowProps {
   onClose: () => void
@@ -34,6 +35,11 @@ export function ScanFlow({ onClose }: ScanFlowProps) {
     else if (step === "verifying") setStep("result")
   }
 
+  const handleHistoryItemClick = (item: ScanHistoryItem) => {
+    setScanResult(item)
+    setStep("result")
+  }
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
       <div className="w-full h-full overflow-y-auto py-10">
@@ -41,7 +47,17 @@ export function ScanFlow({ onClose }: ScanFlowProps) {
           <SafetyTips onContinue={handleNext} />
         )}
         {step === "scanner" && (
-          <ScannerView onScanned={handleScanned} onCancel={onClose} />
+          <ScannerView 
+            onScanned={handleScanned} 
+            onCancel={onClose} 
+            onHistoryClick={() => setStep("history")}
+          />
+        )}
+        {step === "history" && (
+          <HistoryView 
+            onItemClick={handleHistoryItemClick}
+            onBack={() => setStep("scanner")} 
+          />
         )}
         {step === "verifying" && (
           <VerifyingView onVerified={handleNext} onCancel={onClose} isReady={!!scanResult} />
