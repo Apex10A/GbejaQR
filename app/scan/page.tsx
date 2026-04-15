@@ -26,14 +26,18 @@ export default function ScanPage() {
 
   const goToHome = () => router.push("/")
 
-  const handleScanned = (url: string) => {
+  const handleScanned = async (url: string) => {
     setScannedUrl(url)
     setStep("verifying")
+    try {
+      const result = await verifyUrl(url)
+      setScanResult(result)
+    } catch (error) {
+      console.error("Verification failed:", error)
+    }
   }
 
   const handleVerified = () => {
-    const result = verifyUrl(scannedUrl)
-    setScanResult(result)
     setStep("result")
   }
 
@@ -81,6 +85,7 @@ export default function ScanPage() {
             <VerifyingView 
                 onVerified={handleVerified} 
                 onCancel={() => setStep("scanner")} 
+                isReady={!!scanResult}
             />
           )}
           {step === "result" && renderResult()}
