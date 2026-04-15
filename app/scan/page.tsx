@@ -14,10 +14,11 @@ import {
   ErrorResult 
 } from "@/components/scan-flow/result-views"
 import { UploadView } from "@/components/scan-flow/upload-view"
+import { HistoryView } from "@/components/scan-flow/history-view"
 import { Footer } from "@/components/footer"
-import { type ScanResult, verifyUrl } from "@/lib/security"
+import { type ScanResult, type ScanHistoryItem, verifyUrl } from "@/lib/security"
 
-type ScanStep = "safety-tips" | "scanner" | "upload" | "verifying" | "result"
+type ScanStep = "safety-tips" | "scanner" | "upload" | "verifying" | "result" | "history"
 
 export default function ScanPage() {
   const [step, setStep] = useState<ScanStep>("safety-tips")
@@ -39,6 +40,11 @@ export default function ScanPage() {
   }
 
   const handleVerified = () => {
+    setStep("result")
+  }
+
+  const handleHistoryItemClick = (item: ScanHistoryItem) => {
+    setScanResult(item)
     setStep("result")
   }
 
@@ -76,12 +82,19 @@ export default function ScanPage() {
                 onScanned={handleScanned} 
                 onCancel={goToHome} 
                 onUploadClick={() => setStep("upload")}
+                onHistoryClick={() => setStep("history")}
             />
           )}
           {step === "upload" && (
             <UploadView 
                 onUploaded={handleScanned} 
                 onCancel={() => setStep("scanner")} 
+            />
+          )}
+          {step === "history" && (
+            <HistoryView 
+                onItemClick={handleHistoryItemClick}
+                onBack={() => setStep("scanner")} 
             />
           )}
           {step === "verifying" && (
