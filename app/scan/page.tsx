@@ -83,7 +83,6 @@ function ScanPageContent() {
       />
       
       <div className="flex-1 pt-20">
-
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
           {step === "safety-tips" && (
             <SafetyTips onContinue={() => setStep("scanner")} />
@@ -118,8 +117,6 @@ function ScanPageContent() {
           {step === "result" && renderResult()}
         </div>
       </div>
-
-      {/* <Footer /> */}
     </main>
   )
 }

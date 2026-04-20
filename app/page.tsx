@@ -3,8 +3,6 @@
 import { Navbar } from "@/components/navbar"
 import { Hero } from "@/components/hero"
 import { HowItWorks } from "@/components/how-it-works"
-import { ScanResults } from "@/components/scan-results"
-import { Features } from "@/components/features"
 import { Trust } from "@/components/trust"
 import { Footer } from "@/components/footer"
 

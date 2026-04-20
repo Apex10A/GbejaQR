@@ -66,11 +66,9 @@ export function HowItWorks() {
               }`}
               style={{ animationDelay: `${i * 150}ms` }}
             >
-              {/* Top accent bar */}
               <div className="h-1 w-full bg-primary/20 group-hover:bg-primary/50 transition-colors" />
 
               <div className="p-8">
-                {/* Step number badge */}
                 <div className="mb-6 flex items-center justify-between">
                   <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
                     <step.icon className="h-7 w-7" />
@@ -83,14 +81,12 @@ export function HowItWorks() {
                 <h3 className="mb-3 text-xl font-bold text-foreground font-sans">{step.title}</h3>
                 <p className="mb-4 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
 
-                {/* Mini status indicator matching the app screens */}
                 <div className="flex items-center gap-2 rounded-lg bg-background px-3 py-2 border border-border">
                   <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
                   <span className="text-xs text-muted-foreground font-mono">{step.detail}</span>
                 </div>
               </div>
 
-              {/* Connecting arrow (desktop) */}
               {i < steps.length - 1 && (
                 <div className="absolute -right-3 top-1/2 -translate-y-1/2 hidden lg:block z-10">
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-card border border-border">

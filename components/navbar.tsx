@@ -36,12 +36,10 @@ export function Navbar({ onScanClick, onHistoryClick }: { onScanClick?: () => vo
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-white border backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
-        {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5">
           <Image src="/Gbejadark.png" alt="GbejaQR Logo" width={150} height={150} />
         </Link>
 
-        {/* Desktop nav */}
         <div className="hidden items-center gap-8 lg:flex">
           <Link 
             href="/#how-it-works" 
@@ -68,7 +66,6 @@ export function Navbar({ onScanClick, onHistoryClick }: { onScanClick?: () => vo
           </Link>
         </div>
 
-        {/* Desktop CTA */}
         <div className="hidden lg:block">
           {onScanClick ? (
             <Button 
@@ -88,7 +85,6 @@ export function Navbar({ onScanClick, onHistoryClick }: { onScanClick?: () => vo
           )}
         </div>
 
-        {/* Mobile toggle */}
         <button
           className="flex lg:hidden items-center justify-center text-foreground"
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -98,7 +94,6 @@ export function Navbar({ onScanClick, onHistoryClick }: { onScanClick?: () => vo
         </button>
       </div>
 
-      {/* Mobile menu */}
       {mobileOpen && (
         <div className="flex flex-col gap-1 border-t border-border/50 bg-background px-4 py-6 lg:hidden shadow-xl animate-in slide-in-from-top duration-300">
           <Link 

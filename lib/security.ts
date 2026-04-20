@@ -14,7 +14,6 @@ export interface ScanResult {
   }
   analysis?: any
   history_id?: string
-  // Legacy fields for UI compatibility
   threatType?: string
   threatLevel?: number
   publisher?: string
@@ -34,7 +33,7 @@ export async function verifyUrl(url: string): Promise<ScanResult> {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ url: url || "https://example.com" }), // Ensure we have a URL
+      body: JSON.stringify({ url: url || "https://example.com" }),
     })
 
     if (!response.ok) {
@@ -43,7 +42,6 @@ export async function verifyUrl(url: string): Promise<ScanResult> {
 
     const data = await response.json()
     
-    // Map API response to ScanResult
     let status: SecurityStatus = "verified"
     if (!data.is_safe) {
       status = "malicious"
@@ -65,7 +63,6 @@ export async function verifyUrl(url: string): Promise<ScanResult> {
     return {
       ...data,
       status,
-      // Map new fields to legacy fields for UI
       threatType: data.is_safe ? undefined : (data.analysis?.threat_database?.reason || "Malicious Link"),
       threatLevel: Math.ceil((100 - (data.safety_score || 0)) / 20),
       publisher,
@@ -103,7 +100,6 @@ export async function getHistory(): Promise<ScanHistoryItem[]> {
           publisher = new URL(item.url).hostname.split(".").slice(-2, -1)[0].toUpperCase();
         }
       } catch (err) {
-        // ignore
       }
 
       return {
