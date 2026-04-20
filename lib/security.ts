@@ -26,7 +26,7 @@ export interface ScanHistoryItem extends ScanResult {
 }
 
 export async function verifyUrl(url: string): Promise<ScanResult> {
-  const apiUrl = process.env.NEXT_PUBLIC_SCAN_API_URL || "https://gbeja-qr.vercel.app/api/scan";
+  const apiUrl = process.env.NEXT_PUBLIC_SCAN_API_URL || "--";
   try {
     const response = await fetch(apiUrl, {
       method: "POST",
