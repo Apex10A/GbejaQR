@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { SafetyTips } from "./safety-tips"
 import { ScannerView } from "./scanner view"
 import { VerifyingView } from "./verifiying-view"
@@ -17,6 +17,15 @@ interface ScanFlowProps {
 export function ScanFlow({ onClose }: ScanFlowProps) {
   const [step, setStep] = useState<ScanStep>("safety-tips")
   const [scanResult, setScanResult] = useState<ScanResult | null>(null)
+  const [isInitialized, setIsInitialized] = useState(false)
+
+  useEffect(() => {
+    const skipUntil = localStorage.getItem("skip_safety_tips_until")
+    if (skipUntil && Date.now() < parseInt(skipUntil)) {
+      setStep("scanner")
+    }
+    setIsInitialized(true)
+  }, [])
 
   const handleScanned = async (url: string) => {
     console.log("handleScanned triggered with URL:", url);
@@ -30,9 +39,16 @@ export function ScanFlow({ onClose }: ScanFlowProps) {
     }
   }
 
+  const handleContinueFromTips = (skipFor7Days: boolean) => {
+    if (skipFor7Days) {
+      const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000
+      localStorage.setItem("skip_safety_tips_until", (Date.now() + sevenDaysInMs).toString())
+    }
+    setStep("scanner")
+  }
+
   const handleNext = () => {
-    if (step === "safety-tips") setStep("scanner")
-    else if (step === "verifying") setStep("result")
+    if (step === "verifying") setStep("result")
   }
 
   const handleHistoryItemClick = (item: ScanHistoryItem) => {
@@ -40,11 +56,13 @@ export function ScanFlow({ onClose }: ScanFlowProps) {
     setStep("result")
   }
 
+  if (!isInitialized) return null
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
       <div className="w-full h-full overflow-y-auto py-10">
         {step === "safety-tips" && (
-          <SafetyTips onContinue={handleNext} />
+          <SafetyTips onContinue={handleContinueFromTips} />
         )}
         {step === "scanner" && (
           <ScannerView 
