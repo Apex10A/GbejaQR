@@ -1,10 +1,13 @@
 "use client"
 
+import { useState } from "react"
 import { Shield, Search, Link2, ShieldCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
 
 interface SafetyTipsProps {
-  onContinue: () => void
+  onContinue: (skipFor7Days: boolean) => void
 }
 
 const tips = [
@@ -26,6 +29,8 @@ const tips = [
 ]
 
 export function SafetyTips({ onContinue }: SafetyTipsProps) {
+  const [skipFor7Days, setSkipFor7Days] = useState(false)
+
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-8 bg-zinc-50">
       <div className="w-full max-w-md md:max-w-lg">
@@ -90,11 +95,21 @@ QR codes.
 
           {/* Footer */}
           <div className="px-6 pb-6">
+            <div className="mb-6 flex items-center justify-center space-x-2">
+              <Checkbox 
+                id="skip-tips" 
+                checked={skipFor7Days}
+                onCheckedChange={(checked) => setSkipFor7Days(!!checked)}
+              />
+              <Label htmlFor="skip-tips" className="text-sm text-muted-foreground cursor-pointer">
+                Don't show these tips for the next 7 days
+              </Label>
+            </div>
             <p className="mb-4 text-center text-xs text-muted-foreground">
               Your Security is our priority.
             </p>
             <Button
-              onClick={onContinue}
+              onClick={() => onContinue(skipFor7Days)}
               className="w-full bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold py-5 text-sm"
             >
               Got it, Let{"'"}s Scan.

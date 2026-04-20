@@ -24,17 +24,32 @@ function ScanPageContent() {
   const [step, setStep] = useState<ScanStep>("safety-tips")
   const [scannedUrl, setScannedUrl] = useState<string>("")
   const [scanResult, setScanResult] = useState<ScanResult | null>(null)
+  const [isInitialized, setIsInitialized] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
 
   useEffect(() => {
+    const skipUntil = localStorage.getItem("skip_safety_tips_until")
+    if (skipUntil && Date.now() < parseInt(skipUntil)) {
+      setStep("scanner")
+    }
+    
     const stepParam = searchParams.get("step")
     if (stepParam === "history") {
       setStep("history")
     }
+    setIsInitialized(true)
   }, [searchParams])
 
   const goToHome = () => router.push("/")
+
+  const handleContinueFromTips = (skipFor7Days: boolean) => {
+    if (skipFor7Days) {
+      const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000
+      localStorage.setItem("skip_safety_tips_until", (Date.now() + sevenDaysInMs).toString())
+    }
+    setStep("scanner")
+  }
 
   const handleScanned = async (url: string) => {
     setScannedUrl(url)
@@ -84,37 +99,43 @@ function ScanPageContent() {
       
       <div className="flex-1 pt-20">
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          {step === "safety-tips" && (
-            <SafetyTips onContinue={() => setStep("scanner")} />
+          {!isInitialized ? (
+            <div className="min-h-screen flex items-center justify-center">Loading...</div>
+          ) : (
+            <>
+              {step === "safety-tips" && (
+                <SafetyTips onContinue={handleContinueFromTips} />
+              )}
+              {step === "scanner" && (
+                <ScannerView 
+                    onScanned={handleScanned} 
+                    onCancel={goToHome} 
+                    onUploadClick={() => setStep("upload")}
+                    onHistoryClick={() => setStep("history")}
+                />
+              )}
+              {step === "upload" && (
+                <UploadView 
+                    onUploaded={handleScanned} 
+                    onCancel={() => setStep("scanner")} 
+                />
+              )}
+              {step === "history" && (
+                <HistoryView 
+                    onItemClick={handleHistoryItemClick}
+                    onBack={() => setStep("scanner")} 
+                />
+              )}
+              {step === "verifying" && (
+                <VerifyingView 
+                    onVerified={handleVerified} 
+                    onCancel={() => setStep("scanner")} 
+                    isReady={!!scanResult}
+                />
+              )}
+              {step === "result" && renderResult()}
+            </>
           )}
-          {step === "scanner" && (
-            <ScannerView 
-                onScanned={handleScanned} 
-                onCancel={goToHome} 
-                onUploadClick={() => setStep("upload")}
-                onHistoryClick={() => setStep("history")}
-            />
-          )}
-          {step === "upload" && (
-            <UploadView 
-                onUploaded={handleScanned} 
-                onCancel={() => setStep("scanner")} 
-            />
-          )}
-          {step === "history" && (
-            <HistoryView 
-                onItemClick={handleHistoryItemClick}
-                onBack={() => setStep("scanner")} 
-            />
-          )}
-          {step === "verifying" && (
-            <VerifyingView 
-                onVerified={handleVerified} 
-                onCancel={() => setStep("scanner")} 
-                isReady={!!scanResult}
-            />
-          )}
-          {step === "result" && renderResult()}
         </div>
       </div>
     </main>
