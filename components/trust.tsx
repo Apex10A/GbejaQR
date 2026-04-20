@@ -26,26 +26,6 @@ const stats = [
   },
 ]
 
-const testimonials = [
-  {
-    quote: "Cybergbeja caught a fake mPesa payment QR that would have cost my business over 50,000 KES. It took less than a second.",
-    name: "Amara O.",
-    location: "Nairobi, Kenya",
-    role: "Small Business Owner",
-  },
-  {
-    quote: "I use QR codes daily for mobile money. Cybergbeja gives me the confidence to scan without worrying about scams.",
-    name: "Chidi E.",
-    location: "Lagos, Nigeria",
-    role: "Logistics Manager",
-  },
-  {
-    quote: "We integrated Cybergbeja into our fintech app and saw a 40% reduction in user-reported phishing incidents.",
-    name: "Fatima M.",
-    location: "Accra, Ghana",
-    role: "CTO, PayWave",
-  },
-]
 
 function AfricaMap() {
   return (
@@ -108,19 +88,19 @@ export function Trust() {
   }, [])
 
   return (
-    <section id="trust" ref={ref} className="relative py-24 lg:py-32">
+    <section id="trust" ref={ref} className="relative py-10 lg:py-20">
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-primary/3 blur-[100px]" />
 
       <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
         <div className="mx-auto mb-16 max-w-2xl text-center">
           <span className="mb-4 inline-block text-xs font-medium uppercase tracking-widest text-primary font-mono">
-            Why Cybergbeja
+            Why GbejaQR
           </span>
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground lg:text-4xl font-sans text-balance">
             Built in Africa, for Africa
           </h2>
           <p className="text-muted-foreground leading-relaxed">
-            QR code fraud is rising across the continent. Cybergbeja is the security layer Africa{"'"}s mobile-first economy deserves.
+            QR code fraud is rising across the continent. GbejaQR is the security layer Africa{"'"}s mobile-first economy deserves.
           </p>
         </div>
 
@@ -141,73 +121,8 @@ export function Trust() {
           ))}
         </div>
 
-        {/* Regional intelligence + Africa map */}
-        <div className="mb-20 flex flex-col items-center gap-12 lg:flex-row">
-          <div className="flex-1">
-            <div className="rounded-2xl border border-border bg-card p-8">
-              <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
-                  <Globe className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground font-sans">Regional Intelligence</h3>
-              </div>
-              <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
-                Our threat database includes region-specific scam patterns from across Africa, including fake mobile money links, counterfeit payment portals, and social engineering QR campaigns unique to the continent.
-              </p>
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { icon: Shield, text: "Local threat data" },
-                  { icon: Users, text: "Community reports" },
-                  { icon: Lock, text: "Privacy by default" },
-                  { icon: MapPin, text: "Africa-focused" },
-                ].map((item) => (
-                  <div key={item.text} className="flex items-center gap-2.5 rounded-lg bg-background border border-border px-3 py-2.5">
-                    <item.icon className="h-4 w-4 text-primary shrink-0" />
-                    <span className="text-sm text-muted-foreground">{item.text}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-1 items-center justify-center">
-            <AfricaMap />
-          </div>
-        </div>
-
-        {/* Testimonials */}
-        <div className="grid gap-6 lg:grid-cols-3">
-          {testimonials.map((t, i) => (
-            <div
-              key={t.name}
-              className={`rounded-2xl border border-border bg-card p-6 transition-all hover:border-primary/20 ${
-                visible ? "animate-fade-in-up" : "opacity-0"
-              }`}
-              style={{ animationDelay: `${400 + i * 150}ms` }}
-            >
-              <div className="mb-4 flex gap-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <div key={star} className="h-1 w-6 rounded-full bg-primary/40" />
-                ))}
-              </div>
-              <p className="mb-5 text-sm leading-relaxed text-muted-foreground italic">
-                {'"'}{t.quote}{'"'}
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary font-sans">
-                  {t.name.charAt(0)}
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-foreground font-sans">{t.name}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {t.role} &middot; {t.location}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+      
       </div>
     </section>
   )
-}
+}        

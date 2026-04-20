@@ -107,17 +107,10 @@ export function ScannerView({ onScanned, onCancel, onUploadClick, onHistoryClick
       <div className="flex items-center justify-center gap-3 px-5 py-6">
         <button 
           onClick={onUploadClick}
-          className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 sm:px-6 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-primary/10 hover:border-primary/30 active:scale-95"
+          className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-xl border border-border bg-white px-8 sm:px-12 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-primary/10 hover:border-primary/30 active:scale-95"
         >
           <Image className="h-4 w-4 text-primary" />
-          Upload
-        </button>
-        <button 
-          onClick={onHistoryClick}
-          className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 sm:px-6 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-zinc-50 active:scale-95"
-        >
-          <History className="h-4 w-4 text-primary" />
-          History
+          Upload QR Image
         </button>
       </div>
 

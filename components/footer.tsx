@@ -1,4 +1,5 @@
 import { Shield, Camera, ArrowRight } from "lucide-react"
+import Image from "next/image"
 
 const footerLinks = {
   Product: ["Camera Scan", "Gallery Upload", "Threat Detection", "API Access"],
@@ -10,10 +11,8 @@ const footerLinks = {
 export function Footer() {
   return (
     <footer className="border-t border-border bg-card/50">
-      {/* CTA Banner */}
       <div className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <div className="mb-16 overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 relative">
-          {/* Background glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-primary/8 blur-[80px]" />
 
           <div className="relative p-8 text-center lg:p-12">
@@ -36,26 +35,20 @@ export function Footer() {
             </a>
           </div>
         </div>
-
-        {/* Footer grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
-          {/* Brand column */}
-          <div className="lg:col-span-1">
+
+          <div className="">
             <div className="mb-4 flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 border border-primary/25">
-                <Shield className="h-4 w-4 text-primary" />
-              </div>
-              <span className="text-lg font-bold text-foreground font-sans">Cybergbeja</span>
+             <Image src="/Gbejadark.png" alt="GbejaQR Logo" width={105} height={105} />
             </div>
             <p className="mb-3 text-sm leading-relaxed text-muted-foreground">
               Scan with confidence.
             </p>
             <p className="text-xs text-muted-foreground">
-              Protecting Africa{"'"}s mobile users, one scan at a time.
+              Protecting mobile users worldwide, one scan at a time.
             </p>
           </div>
 
-          {/* Link columns */}
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
               <h4 className="mb-4 text-sm font-semibold text-foreground font-sans">{category}</h4>
@@ -75,13 +68,12 @@ export function Footer() {
           ))}
         </div>
 
-        {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 lg:flex-row">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Cybergbeja. All rights reserved.
+            &copy; {new Date().getFullYear()} GbejaQR. All rights reserved.
           </p>
           <p className="text-xs text-muted-foreground">
-            Made with care for a safer digital Africa.
+            Made with care for a safer digital world.
           </p>
         </div>
       </div>

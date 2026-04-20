@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { Suspense, useEffect, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Navbar } from "@/components/navbar"
 import { SafetyTips } from "@/components/scan-flow/safety-tips"
 import { ScannerView } from "@/components/scan-flow/scanner view"
@@ -20,11 +20,19 @@ import { type ScanResult, type ScanHistoryItem, verifyUrl } from "@/lib/security
 
 type ScanStep = "safety-tips" | "scanner" | "upload" | "verifying" | "result" | "history"
 
-export default function ScanPage() {
+function ScanPageContent() {
   const [step, setStep] = useState<ScanStep>("safety-tips")
   const [scannedUrl, setScannedUrl] = useState<string>("")
   const [scanResult, setScanResult] = useState<ScanResult | null>(null)
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const stepParam = searchParams.get("step")
+    if (stepParam === "history") {
+      setStep("history")
+    }
+  }, [searchParams])
 
   const goToHome = () => router.push("/")
 
@@ -69,7 +77,10 @@ export default function ScanPage() {
 
   return (
     <main className="min-h-screen bg-white flex flex-col">
-      <Navbar onScanClick={() => setStep("safety-tips")} />
+      <Navbar 
+        onScanClick={() => setStep("safety-tips")} 
+        onHistoryClick={() => setStep("history")}
+      />
       
       <div className="flex-1 pt-20">
 
@@ -110,5 +121,13 @@ export default function ScanPage() {
 
       {/* <Footer /> */}
     </main>
+  )
+}
+
+export default function ScanPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <ScanPageContent />
+    </Suspense>
   )
 }
