@@ -13,6 +13,11 @@ interface SuspiciousResultProps {
 }
 
 export function SuspiciousResult({ onClose, result }: SuspiciousResultProps) {
+  const handleProceed = () => {
+    window.open(result.url, "_blank", "noopener,noreferrer")
+    onClose()
+  }
+
   return (
     <BaseLayout className="bg-white">
       <ResultHeader title="Security Status" onBack={onClose} />
@@ -40,7 +45,7 @@ export function SuspiciousResult({ onClose, result }: SuspiciousResultProps) {
         primaryLabel="Back to Safety" 
         onPrimary={onClose} 
         secondaryLabel="I understand the risk, let me through"
-        onSecondary={onClose}
+        onSecondary={handleProceed}
         primaryVariant="default"
         primaryColor="bg-primary"
         icon={<Shield className="h-4 w-4" />}
