@@ -14,6 +14,11 @@ interface VerifiedResultProps {
 export function VerifiedResult({ onClose, result }: VerifiedResultProps) {
   if (!result) return null
 
+  const handleProceed = () => {
+    window.open(result.url, "_blank", "noopener,noreferrer")
+    onClose()
+  }
+
   return (
     <BaseLayout>
       {/* Green verification area */}
@@ -65,7 +70,7 @@ export function VerifiedResult({ onClose, result }: VerifiedResultProps) {
 
       <ResultAction 
         primaryLabel="Proceed to Link" 
-        onPrimary={onClose} 
+        onPrimary={handleProceed} 
         secondaryLabel="Cancel and Go Back"
         onSecondary={onClose}
         primaryColor="bg-safe"

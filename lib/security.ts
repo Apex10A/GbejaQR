@@ -49,16 +49,30 @@ export async function verifyUrl(url: string): Promise<ScanResult> {
       status = "suspicious"
     }
 
-    let publisher = "Publisher";
-    try {
-      if (data.site_info?.category) {
-        publisher = data.site_info.category;
-      } else if (url) {
-        publisher = new URL(url).hostname.split(".").slice(-2, -1)[0].toUpperCase();
+    const getPublisher = (item: any, fallbackUrl: string) => {
+      const category = item.site_info?.category;
+      const description = item.site_info?.description;
+      
+      if (category && category.toLowerCase() !== "unknown") {
+        return category;
       }
-    } catch (err) {
-      console.warn("Error parsing URL for publisher:", err);
-    }
+      
+      if (description && description.toLowerCase() !== "unknown") {
+        return description;
+      }
+      
+      if (fallbackUrl) {
+        try {
+          return new URL(fallbackUrl).hostname.split(".").slice(-2, -1)[0].toUpperCase();
+        } catch (err) {
+          console.warn("Error parsing URL for publisher:", err);
+        }
+      }
+      
+      return "Publisher";
+    };
+
+    const publisher = getPublisher(data, url);
 
     return {
       ...data,
@@ -81,7 +95,30 @@ export async function verifyUrl(url: string): Promise<ScanResult> {
 }
 
 export async function getHistory(): Promise<ScanHistoryItem[]> {
-  const historyUrl = process.env.NEXT_PUBLIC_HISTORY_API_URL || "https://gbeja-qr.vercel.app/api/history";
+  const historyUrl = process.env.NEXT_PUBLIC_HISTORY_API_URL || "";
+  
+  const getPublisher = (item: any, fallbackUrl: string) => {
+    const category = item.site_info?.category;
+    const description = item.site_info?.description;
+    
+    if (category && category.toLowerCase() !== "unknown") {
+      return category;
+    }
+    
+    if (description && description.toLowerCase() !== "unknown") {
+      return description;
+    }
+    
+    if (fallbackUrl) {
+      try {
+        return new URL(fallbackUrl).hostname.split(".").slice(-2, -1)[0].toUpperCase();
+      } catch (err) {
+      }
+    }
+    
+    return "Publisher";
+  };
+
   try {
     const response = await fetch(historyUrl);
     if (!response.ok) throw new Error("Failed to fetch history");
@@ -92,15 +129,7 @@ export async function getHistory(): Promise<ScanHistoryItem[]> {
       if (!item.is_safe) status = "malicious";
       else if (item.safety_score < 70) status = "suspicious";
       
-      let publisher = "Publisher";
-      try {
-        if (item.site_info?.category) {
-          publisher = item.site_info.category;
-        } else if (item.url) {
-          publisher = new URL(item.url).hostname.split(".").slice(-2, -1)[0].toUpperCase();
-        }
-      } catch (err) {
-      }
+      const publisher = getPublisher(item, item.url);
 
       return {
         ...item,
