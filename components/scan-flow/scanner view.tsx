@@ -96,6 +96,44 @@ export function ScannerView({ onScanned, onCancel, onUploadClick, onHistoryClick
     }
   }, [hasCamera, onScanned])
 
+  const isValidUrl = (input: string) => {
+    const trimmed = input.trim().toLowerCase()
+    if (!trimmed) return false
+    if (trimmed === "https://" || trimmed === "http://") return false
+    
+    // If it has protocol, ensure there's something after it
+    const protocolMatch = trimmed.match(/^https?:\/\/(.+)/i)
+    if (protocolMatch) {
+      return !!protocolMatch[1].trim()
+    }
+    
+    return true // Assume it's a domain that will be prefixed
+  }
+
+  const handleUrlSubmit = () => {
+    let url = demoUrl.trim()
+    if (!isValidUrl(url)) return
+
+    // Auto-prefix with https:// if no protocol is provided
+    if (!/^https?:\/\//i.test(url)) {
+      url = "https://" + url
+    }
+    onScanned(url)
+  }
+
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setDemoUrl(value)
+  }
+
+  const handleFocus = () => {
+    if (!demoUrl) {
+      setDemoUrl("https://")
+    }
+  }
+
+  const canSubmit = scanning || isValidUrl(demoUrl)
+
   return (
     <div className="flex min-h-[calc(100vh-80px)] flex-col bg-zinc-50">
       <div className="px-5 pb-2 text-center pt-8">
@@ -169,8 +207,9 @@ export function ScannerView({ onScanned, onCancel, onUploadClick, onHistoryClick
           <input 
             type="text"
             value={demoUrl}
-            onChange={(e) => setDemoUrl(e.target.value)}
-            placeholder="https://example.com"
+            onChange={handleUrlChange}
+            onFocus={handleFocus}
+            placeholder="example.com"
             className="w-full px-4 py-3 bg-white border border-border rounded-xl text-sm font-mono focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all shadow-sm"
           />
         </div>
@@ -178,9 +217,9 @@ export function ScannerView({ onScanned, onCancel, onUploadClick, onHistoryClick
 
       <div className="px-5 pb-12 mt-auto text-center">
         <button
-          onClick={() => onScanned(demoUrl)}
-          disabled={!scanning && !demoUrl}
-          className={`w-full max-w-sm px-10 py-5 rounded-xl font-bold transition-all text-base ${scanning || demoUrl ? 'bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/25 active:scale-95' : 'bg-zinc-200 text-muted-foreground cursor-not-allowed'}`}
+          onClick={handleUrlSubmit}
+          disabled={!canSubmit}
+          className={`w-full max-w-sm px-10 py-5 rounded-xl font-bold transition-all text-base ${canSubmit ? 'bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/25 active:scale-95' : 'bg-zinc-200 text-muted-foreground cursor-not-allowed'}`}
         >
           Confirm Scan
         </button>
