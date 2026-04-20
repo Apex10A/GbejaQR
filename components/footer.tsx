@@ -1,5 +1,6 @@
 import { Shield, Camera, ArrowRight } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 const footerLinks = {
   Product: ["Camera Scan", "Gallery Upload", "Threat Detection", "API Access"],
@@ -25,18 +26,17 @@ export function Footer() {
             <p className="mb-6 text-muted-foreground max-w-md mx-auto">
               No sign-up. No downloads. Just open, scan, and stay safe.
             </p>
-            <a
-              href="#"
+            <Link
+              href="/scan"
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/85 font-sans animate-glow-blue"
             >
               <Camera className="h-5 w-5" />
               Start Scanning
               <ArrowRight className="h-4 w-4" />
-            </a>
+            </Link>
           </div>
         </div>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
-
           <div className="">
             <div className="mb-4 flex items-center gap-2.5">
              <Image src="/Gbejadark.png" alt="GbejaQR Logo" width={105} height={105} />
