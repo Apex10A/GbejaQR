@@ -25,7 +25,7 @@ export function ResultAction({
   return (
     <div className="flex flex-col gap-3 px-6 pb-6 pt-2">
       <Button
-        className={`w-full ${primaryVariant === 'default' ? primaryColor : ''} text-white hover:opacity-90 font-sans font-bold py-7 text-base shadow-lg active:scale-[0.98] transition-all`}
+        className={`w-full ${primaryVariant === 'default' ? primaryColor + ' text-white hover:opacity-90' : ''} font-sans font-bold py-7 text-base shadow-lg active:scale-[0.98] transition-all`}
         onClick={onPrimary}
         variant={primaryVariant}
       >

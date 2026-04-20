@@ -41,7 +41,8 @@ export function SuspiciousResult({ onClose, result }: SuspiciousResultProps) {
         onPrimary={onClose} 
         secondaryLabel="I understand the risk, let me through"
         onSecondary={onClose}
-        primaryVariant="outline"
+        primaryVariant="default"
+        primaryColor="bg-primary"
         icon={<Shield className="h-4 w-4" />}
       />
     </BaseLayout>
