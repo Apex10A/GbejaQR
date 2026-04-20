@@ -13,20 +13,13 @@ export default function Page() {
     <main className="min-h-screen overflow-x-hidden">
       <Navbar />
       <Hero />
-{/*       
       <div className="border-t border-border">
         <HowItWorks />
       </div>
       <div className="border-t border-border">
-        <ScanResults />
-      </div>
-      <div className="border-t border-border">
-        <Features />
-      </div>
-      <div className="border-t border-border">
         <Trust />
       </div>
-      <Footer /> */}
+      <Footer />
     </main>
   )
 }

@@ -7,8 +7,8 @@ const _spaceGrotesk = Space_Grotesk({ subsets: ['latin'] })
 const _jetbrainsMono = JetBrains_Mono({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Cybergbeja - Scan QR Codes with Confidence',
-  description: 'Cybergbeja is a security-first QR code scanning and verification platform that protects you from phishing, scams, malware, and fraudulent QR codes.',
+  title: 'GbejaQR - Scan QR Codes with Confidence',
+  description: 'GbejaQR is a security-first QR code scanning and verification platform that protects you from phishing, scams, malware, and fraudulent QR codes.',
   generator: 'v0.app',
   icons: {
     icon: [

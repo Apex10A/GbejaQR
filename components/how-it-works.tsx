@@ -8,7 +8,7 @@ const steps = [
     icon: Camera,
     title: "Scan",
     description:
-      "Point your camera at any QR code or upload an image. Cybergbeja captures the encoded data instantly.",
+      "Point your camera at any QR code or upload an image. GbejaQR captures the encoded data instantly.",
     detail: "Tap to start",
   },
   {
@@ -43,7 +43,7 @@ export function HowItWorks() {
   }, [])
 
   return (
-    <section id="how-it-works" ref={ref} className="relative py-24 lg:py-32">
+    <section id="how-it-works" ref={ref} className="relative py-10 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="mx-auto mb-16 max-w-2xl text-center">
           <span className="mb-4 inline-block text-xs font-medium uppercase tracking-widest text-primary font-mono">
