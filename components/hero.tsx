@@ -48,13 +48,13 @@ function PhoneMockup() {
           </div>
         </div>
       </div>
-      <div className="absolute -left-4 top-0 rounded-lg bg-safe/15 border border-safe/25 px-3 py-2 ">
+      <div className="absolute -left-4 top-[-5px] rounded-lg bg-safe/15 border border-safe/25 px-3 py-2 ">
         <div className="flex items-center gap-2">
           <ShieldCheck className="h-4 w-4 text-safe" />
           <span className="text-xs font-medium text-safe">Link Verified</span>
         </div>
       </div>
-      <div className="absolute -right-4 bottom-0 rounded-lg bg-destructive/15 border border-destructive/25 px-3 py-2 " style={{ animationDelay: "1.5s" }}>
+      <div className="absolute -right-4 bottom-[-5px] rounded-lg bg-destructive/15 border border-destructive/25 px-3 py-2 " style={{ animationDelay: "1.5s" }}>
         <div className="flex items-center gap-2">
           <Shield className="h-4 w-4 text-destructive" />
           <span className="text-xs font-medium text-destructive">Threat Blocked</span>
