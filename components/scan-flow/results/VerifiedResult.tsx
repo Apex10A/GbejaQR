@@ -1,10 +1,13 @@
 "use client"
 
-import { ShieldCheck, ArrowRight, Info } from "lucide-react"
+import { useState } from "react"
+import { ShieldCheck, ArrowRight, Info, ArrowLeft } from "lucide-react"
 import { BaseLayout } from "./BaseLayout"
 import { ResultUrl } from "./ResultUrl"
 import { ResultAction } from "./ResultAction"
+import { LinkDetails } from "./LinkDetails"
 import { type ScanResult } from "@/lib/security"
+import { Button } from "@/components/ui/button"
 
 interface VerifiedResultProps {
   onClose: () => void
@@ -12,6 +15,7 @@ interface VerifiedResultProps {
 }
 
 export function VerifiedResult({ onClose, result }: VerifiedResultProps) {
+  const [showDetails, setShowDetails] = useState(false)
   if (!result) return null
 
   const handleProceed = () => {
@@ -21,58 +25,79 @@ export function VerifiedResult({ onClose, result }: VerifiedResultProps) {
 
   return (
     <BaseLayout>
-      {/* Green verification area */}
-      <div className="bg-safe/5 px-6 py-10 text-center">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-safe/10 border-2 border-safe/20 animate-in zoom-in duration-500">
-          <ShieldCheck className="h-8 w-8 text-safe" />
-        </div>
-        <h2 className="text-2xl font-bold text-foreground font-sans tracking-tight">
-          {result.site_info?.title || "Link Verified"}
-        </h2>
-        <p className="mt-1.5 text-[10px] font-bold text-safe uppercase tracking-[0.2em]">
-          Secure connection Established
-        </p>
+      {/* Top Navigation */}
+      <div className="flex items-center px-4 py-3 border-b border-border/50">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={onClose}
+          className="h-8 w-8 rounded-full text-muted-foreground hover:text-foreground hover:bg-zinc-100"
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+        <span className="ml-2 text-[11px] font-bold text-muted-foreground uppercase tracking-widest font-sans">
+          Scan Result
+        </span>
       </div>
 
-      {/* Publisher badge */}
-      <div className="flex items-center justify-center px-6 py-5">
-        <div className="flex items-center gap-3 rounded-xl bg-zinc-50 border border-border px-4 py-3.5 w-full">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7B5EA7] text-white text-sm font-bold font-sans overflow-hidden">
-            {result.site_info?.og_image ? (
-              <img src={result.site_info.og_image} alt="" className="h-full w-full object-cover" />
-            ) : (
-              result.publisher?.[0] || "P"
-            )}
+      <div className={showDetails ? "hidden" : "block"}>
+        {/* Green verification area */}
+        <div className="bg-safe/5 px-6 py-10 text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-safe/10 border-2 border-safe/20 animate-in zoom-in duration-500">
+            <ShieldCheck className="h-8 w-8 text-safe" />
           </div>
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4 text-safe" />
-            <span className="text-[13px] font-semibold text-foreground font-sans leading-tight">
-              {result.publisher || "Publisher"} Identity Confirmed
+          <h2 className="text-2xl font-bold text-foreground font-sans tracking-tight">
+            {result.site_info?.title || "Link Verified"}
+          </h2>
+          <p className="mt-1.5 text-[10px] font-bold text-safe uppercase tracking-[0.2em]">
+            Secure connection Established
+          </p>
+        </div>
+
+        {/* Publisher badge */}
+        <div className="flex items-center justify-center px-6 py-5">
+          <div className="flex items-center gap-3 rounded-xl bg-zinc-50 border border-border px-4 py-3.5 w-full">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7B5EA7] text-white text-sm font-bold font-sans overflow-hidden">
+              {result.site_info?.og_image ? (
+                <img src={result.site_info.og_image} alt="" className="h-full w-full object-cover" />
+              ) : (
+                result.publisher?.[0] || "P"
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-safe" />
+              <span className="text-[13px] font-semibold text-foreground font-sans leading-tight">
+                {result.publisher || "Publisher"} 
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <ResultUrl url={result.url} />
+
+        {/* Security tip */}
+        <div className="px-6 py-4">
+          <div className="flex items-start gap-3 rounded-xl bg-primary/5 border border-primary/10 px-4 py-4">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
+              <Info className="h-4 w-4 text-primary" />
             </span>
+            <div>
+              <p className="text-xs font-bold text-foreground font-sans uppercase tracking-wider">Security Note</p>
+              <p className="mt-1 text-[11px] text-muted-foreground leading-relaxed">
+                {result.advice || result.site_info?.description || "This link was generated by a verified publisher and has been checked against our global database."}
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
-      <ResultUrl url={result.url} />
-
-      {/* Security tip */}
-      <div className="px-6 py-4">
-        <div className="flex items-start gap-3 rounded-xl bg-primary/5 border border-primary/10 px-4 py-4">
-          <Info className="h-4 w-4 shrink-0 text-primary mt-0.5" />
-          <div>
-            <p className="text-xs font-bold text-foreground font-sans uppercase tracking-wider">Security Note</p>
-            <p className="mt-1 text-[11px] text-muted-foreground leading-relaxed">
-              {result.advice || result.site_info?.description || "This link was generated by a verified publisher and has been checked against our global database."}
-            </p>
-          </div>
-        </div>
-      </div>
+      {showDetails && <LinkDetails result={result} />}
 
       <ResultAction 
-        primaryLabel="Proceed to Link" 
+        primaryLabel={showDetails ? "Proceed to Link" : "Proceed to Link"} 
         onPrimary={handleProceed} 
-        secondaryLabel="Cancel and Go Back"
-        onSecondary={onClose}
+        secondaryLabel={showDetails ? "Hide Details" : "More Details"}
+        onSecondary={() => setShowDetails(!showDetails)}
         primaryColor="bg-safe"
         icon={<ArrowRight className="h-5 w-5" />}
       />
