@@ -11,7 +11,7 @@ function PhoneMockup() {
     <div className="relative mx-auto w-[280px] md:w-[320px]">
       <div className="relative rounded-[2.5rem] border-2 border-primary/20 bg-card p-3 animate-glow-blue">
         <div className="relative overflow-hidden rounded-[2rem] bg-background">
-          <div className="flex items-center justify-between px-6 pt-4 pb-2">
+          <div className="flex items-center justify-between px-6 pt-6 pb-2">
             <Image src="/Gbejadark.png" alt="GbejaQR Logo" width={55} height={55} />
           </div>
           <div className="flex flex-col items-center px-6 pt-6 pb-8">
@@ -48,13 +48,13 @@ function PhoneMockup() {
           </div>
         </div>
       </div>
-      <div className="absolute -left-4 top-1/4 rounded-lg bg-safe/15 border border-safe/25 px-3 py-2 ">
+      <div className="absolute -left-4 top-0 rounded-lg bg-safe/15 border border-safe/25 px-3 py-2 ">
         <div className="flex items-center gap-2">
           <ShieldCheck className="h-4 w-4 text-safe" />
           <span className="text-xs font-medium text-safe">Link Verified</span>
         </div>
       </div>
-      <div className="absolute -right-4 top-2/3 rounded-lg bg-destructive/15 border border-destructive/25 px-3 py-2 " style={{ animationDelay: "1.5s" }}>
+      <div className="absolute -right-4 bottom-0 rounded-lg bg-destructive/15 border border-destructive/25 px-3 py-2 " style={{ animationDelay: "1.5s" }}>
         <div className="flex items-center gap-2">
           <Shield className="h-4 w-4 text-destructive" />
           <span className="text-xs font-medium text-destructive">Threat Blocked</span>
