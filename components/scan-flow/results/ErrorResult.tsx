@@ -1,10 +1,11 @@
 "use client"
 
-import { ShieldX, AlertTriangle } from "lucide-react"
+import { ShieldX, AlertTriangle, ArrowLeft } from "lucide-react"
 import { BaseLayout } from "./BaseLayout"
 import { ResultUrl } from "./ResultUrl"
 import { ResultAction } from "./ResultAction"
 import { type ScanResult } from "@/lib/security"
+import { Button } from "@/components/ui/button"
 
 interface ErrorResultProps {
   onClose: () => void
@@ -12,12 +13,26 @@ interface ErrorResultProps {
 }
 
 export function ErrorResult({ onClose, result }: ErrorResultProps) {
+  if (!result) return null
+
   return (
     <BaseLayout>
+      {/* Top Navigation */}
+      <div className="flex items-center px-4 py-3 border-b border-border/50">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={onClose}
+          className="h-8 w-8 rounded-full text-muted-foreground hover:text-foreground hover:bg-zinc-100"
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+        <span className="ml-2 text-[11px] font-bold text-muted-foreground uppercase tracking-widest font-sans">
+          Scan Error
+        </span>
+      </div>
+
       <div className="bg-destructive/5 px-6 py-10 text-center">
-        {/* <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10 border-2 border-destructive/20">
-          <ShieldX className="h-8 w-8 text-destructive" />
-        </div> */}
         <h2 className="text-2xl font-bold text-foreground font-sans tracking-tight">Scan Error</h2>
         <p className="mt-1.5 text-[10px] font-bold text-destructive uppercase tracking-[0.2em]">
           Request Failed
@@ -41,8 +56,6 @@ export function ErrorResult({ onClose, result }: ErrorResultProps) {
       <ResultAction 
         primaryLabel="Try Again" 
         onPrimary={onClose} 
-        secondaryLabel="Go Back"
-        onSecondary={onClose}
         primaryColor="bg-primary"
       />
     </BaseLayout>

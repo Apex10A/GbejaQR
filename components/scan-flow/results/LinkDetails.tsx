@@ -18,19 +18,36 @@ export function LinkDetails({ result }: LinkDetailsProps) {
       icon: <Lock className="h-4 w-4 text-safe" />,
       items: [
         { label: "HTTPS", value: analysis.heuristics?.is_https ? "Yes" : "No", status: analysis.heuristics?.is_https ? "safe" : "warning" },
+        { label: "Redirected", value: analysis.resolution?.was_redirected ? "Yes" : "No", status: analysis.resolution?.was_redirected ? "warning" : "safe" },
         { label: "SSL Valid", value: analysis.ssl?.valid ? "Yes" : "No", status: analysis.ssl?.valid ? "safe" : "danger" },
         { label: "Issuer", value: analysis.ssl?.issuer || "Unknown" },
-        { label: "Cert Age", value: `${Math.round(analysis.ssl?.age_days || 0)} days` },
       ]
     },
     {
       title: "Security Analysis",
       icon: <Shield className="h-4 w-4 text-safe" />,
       items: [
-        { label: "Homograph", value: analysis.heuristics?.homograph?.suspicious ? "Suspicious" : "Clean", status: analysis.heuristics?.homograph?.suspicious ? "danger" : "safe" },
-        { label: "Typosquatting", value: analysis.heuristics?.typosquatting?.is_typo ? "Potential" : "Clean", status: analysis.heuristics?.typosquatting?.is_typo ? "danger" : "safe" },
-        { label: "Entropy", value: analysis.heuristics?.entropy_score || "N/A" },
-        { label: "Risk TLD", value: analysis.heuristics?.is_high_risk_tld ? "Yes" : "No", status: analysis.heuristics?.is_high_risk_tld ? "danger" : "safe" },
+        { 
+          label: "Look-alike Domain", //Homograph 
+          value: analysis.heuristics?.homograph?.suspicious ? "Warning: Fake Characters" : "Authentic Characters", 
+          status: analysis.heuristics?.homograph?.suspicious ? "danger" : "safe" 
+        },
+        { 
+          label: "Brand Impersonation", //Typosquatting
+          value: analysis.heuristics?.typosquatting?.is_typo ? "Potential Typosquat" : "Clean Domain", 
+          status: analysis.heuristics?.typosquatting?.is_typo ? "danger" : "safe" 
+        },
+        { 
+          label: "Decoded Domain", //Decoded Homograph
+          value: analysis.heuristics?.homograph?.decoded_name || "N/A",
+          status: analysis.heuristics?.homograph?.is_idn ? "warning" : "safe"
+        },
+        { label: "Domain Entropy", value: analysis.heuristics?.entropy_score || "N/A" },
+        { 
+          label: "High-Risk TLD", 
+          value: analysis.heuristics?.is_high_risk_tld ? "Yes" : "No", 
+          status: analysis.heuristics?.is_high_risk_tld ? "danger" : "safe" 
+        },
       ]
     },
     {
