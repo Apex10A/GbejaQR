@@ -26,7 +26,18 @@ export interface ScanHistoryItem extends ScanResult {
 }
 
 export async function verifyUrl(url: string): Promise<ScanResult> {
-  const apiUrl = process.env.NEXT_PUBLIC_SCAN_API_URL || "--";
+  const apiUrl = process.env.NEXT_PUBLIC_SCAN_API_URL;
+  if (!apiUrl) {
+    return {
+      url,
+      status: "error",
+      is_safe: false,
+      safety_score: 0,
+      advice: "Security engine configuration missing.",
+      threatType: "Configuration Error",
+    };
+  }
+
   try {
     const response = await fetch(apiUrl, {
       method: "POST",
@@ -95,7 +106,11 @@ export async function verifyUrl(url: string): Promise<ScanResult> {
 }
 
 export async function getHistory(): Promise<ScanHistoryItem[]> {
-  const historyUrl = process.env.NEXT_PUBLIC_HISTORY_API_URL || "";
+  const historyUrl = process.env.NEXT_PUBLIC_HISTORY_API_URL;
+  if (!historyUrl) {
+    console.warn("History API URL missing");
+    return [];
+  }
   
   const getPublisher = (item: any, fallbackUrl: string) => {
     const category = item.site_info?.category;
