@@ -104,6 +104,7 @@ export async function verifyUrl(url: string): Promise<ScanResult> {
     }
   }
 }
+{/*heyo man*/}
 
 export async function getHistory(): Promise<ScanHistoryItem[]> {
   const historyUrl = process.env.NEXT_PUBLIC_HISTORY_API_URL;
