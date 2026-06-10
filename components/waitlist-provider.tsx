@@ -78,7 +78,7 @@ export function WaitlistProvider({ children }: { children: React.ReactNode }) {
               if (!open) handleDismiss()
             }}
           >
-            <DialogContent className="max-w-md p-0 overflow-hidden rounded-2xl border-border gap-0">
+            <DialogContent className="w-[calc(100%-2rem)] max-w-[calc(100%-2rem)] sm:w-full sm:max-w-md p-0 overflow-hidden rounded-2xl border-border gap-0">
               <div className="bg-primary/10 px-6 py-6 text-center">
                 <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-xl bg-white border border-border">
                   <Mail className="h-7 w-7 text-primary" />
@@ -99,7 +99,7 @@ export function WaitlistProvider({ children }: { children: React.ReactNode }) {
           </Dialog>
 
           <Dialog open={showSuccess} onOpenChange={setShowSuccess}>
-            <DialogContent className="max-w-md rounded-2xl border-border text-center">
+            <DialogContent className="w-[calc(100%-2rem)] max-w-[calc(100%-2rem)] sm:w-full sm:max-w-md rounded-2xl border-border text-center">
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-safe/15 border border-safe/25">
                 <CheckCircle2 className="h-8 w-8 text-safe" />
               </div>
