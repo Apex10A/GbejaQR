@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Shield, Camera, Image, History, AlertCircle } from "lucide-react"
+import { Camera, ImageIcon, AlertCircle } from "lucide-react"
 import jsQR from "jsqr"
 
 interface ScannerViewProps {
@@ -11,7 +11,7 @@ interface ScannerViewProps {
   onHistoryClick?: () => void
 }
 
-export function ScannerView({ onScanned, onCancel, onUploadClick, onHistoryClick }: ScannerViewProps) {
+export function ScannerView({ onScanned, onUploadClick }: ScannerViewProps) {
   const [scanning, setScanning] = useState(false)
   const [demoUrl, setDemoUrl] = useState("")
   const streamRef = useRef<MediaStream | null>(null)
@@ -147,7 +147,7 @@ export function ScannerView({ onScanned, onCancel, onUploadClick, onHistoryClick
           onClick={onUploadClick}
           className="flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-xl border border-border bg-white px-8 sm:px-12 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-primary/10 hover:border-primary/30 active:scale-95"
         >
-          <Image className="h-4 w-4 text-primary" />
+          <ImageIcon className="h-4 w-4 text-primary" aria-hidden="true" />
           Upload QR Image
         </button>
       </div>

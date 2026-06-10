@@ -59,6 +59,7 @@ export function VerifiedResult({ onClose, result }: VerifiedResultProps) {
           <div className="flex items-center gap-3 rounded-xl bg-zinc-50 border border-border px-4 py-3.5 w-full">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7B5EA7] text-white text-sm font-bold font-sans overflow-hidden">
               {result.site_info?.og_image ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img src={result.site_info.og_image} alt="" className="h-full w-full object-cover" />
               ) : (
                 result.publisher?.[0] || "P"

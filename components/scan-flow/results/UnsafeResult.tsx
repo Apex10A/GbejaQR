@@ -18,11 +18,6 @@ export function UnsafeResult({ onClose, result }: UnsafeResultProps) {
   const [showDetails, setShowDetails] = useState(false)
   if (!result) return null
 
-  const handleProceed = () => {
-    window.open(result.url, "_blank", "noopener,noreferrer")
-    onClose()
-  }
-
   return (
     <BaseLayout className="bg-white">
       {/* Top Navigation */}

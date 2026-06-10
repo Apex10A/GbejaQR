@@ -1,7 +1,8 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Camera, Search, ShieldCheck, ArrowRight } from "lucide-react"
+import { Camera, Search, ShieldCheck, ArrowRight, Clock } from "lucide-react"
+import { useWaitlist } from "@/components/waitlist-provider"
 
 const steps = [
   {
@@ -30,6 +31,7 @@ const steps = [
 export function HowItWorks() {
   const [visible, setVisible] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
+  const { isWaitlistMode, openWaitlist } = useWaitlist()
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -52,8 +54,18 @@ export function HowItWorks() {
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground lg:text-4xl font-sans text-balance">
             Three steps to a safer scan
           </h2>
+          {isWaitlistMode && (
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-4 py-1.5">
+              <Clock className="h-4 w-4 text-primary" />
+              <span className="text-xs font-medium text-primary font-mono uppercase tracking-wider">
+                Features coming soon
+              </span>
+            </div>
+          )}
           <p className="text-muted-foreground leading-relaxed">
-            No sign-up required. No data stored. Just point, scan, and get a clear answer.
+            {isWaitlistMode
+              ? "Here\u2019s how GbejaQR will work at launch. Join the waitlist to be first in line when scanning goes live."
+              : "No sign-up required. No data stored. Just point, scan, and get a clear answer."}
           </p>
         </div>
 
@@ -62,8 +74,8 @@ export function HowItWorks() {
             <div
               key={step.title}
               className={`group relative overflow-hidden rounded-2xl border border-border bg-card transition-all duration-500 hover:border-primary/40 ${
-                visible ? "animate-fade-in-up" : "opacity-0"
-              }`}
+                isWaitlistMode ? "opacity-90" : ""
+              } ${visible ? "animate-fade-in-up" : "opacity-0"}`}
               style={{ animationDelay: `${i * 150}ms` }}
             >
               <div className="h-1 w-full bg-primary/20 group-hover:bg-primary/50 transition-colors" />
@@ -82,8 +94,10 @@ export function HowItWorks() {
                 <p className="mb-4 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
 
                 <div className="flex items-center gap-2 rounded-lg bg-background px-3 py-2 border border-border">
-                  <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                  <span className="text-xs text-muted-foreground font-mono">{step.detail}</span>
+                  <div className={`h-2 w-2 rounded-full ${isWaitlistMode ? "bg-muted-foreground/50" : "bg-primary animate-pulse"}`} />
+                  <span className="text-xs text-muted-foreground font-mono">
+                    {isWaitlistMode ? "Coming soon" : step.detail}
+                  </span>
                 </div>
               </div>
 
@@ -97,6 +111,20 @@ export function HowItWorks() {
             </div>
           ))}
         </div>
+
+        {isWaitlistMode && (
+          <p className="mt-10 text-center text-sm text-muted-foreground">
+            Scanning isn&apos;t available yet.{" "}
+            <button
+              type="button"
+              onClick={openWaitlist}
+              className="font-medium text-primary underline-offset-4 hover:underline"
+            >
+              Join the waitlist
+            </button>{" "}
+            to get notified when we launch.
+          </p>
+        )}
       </div>
     </section>
   )

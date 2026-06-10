@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { SafetyTips } from "./safety-tips"
 import { ScannerView } from "./scanner view"
 import { VerifyingView } from "./verifiying-view"
@@ -14,18 +14,20 @@ interface ScanFlowProps {
   onClose: () => void
 }
 
-export function ScanFlow({ onClose }: ScanFlowProps) {
-  const [step, setStep] = useState<ScanStep>("safety-tips")
-  const [scanResult, setScanResult] = useState<ScanResult | null>(null)
-  const [isInitialized, setIsInitialized] = useState(false)
+function getInitialScanStep(): ScanStep {
+  if (typeof window === "undefined") return "safety-tips"
 
-  useEffect(() => {
-    const skipUntil = localStorage.getItem("skip_safety_tips_until")
-    if (skipUntil && Date.now() < parseInt(skipUntil)) {
-      setStep("scanner")
-    }
-    setIsInitialized(true)
-  }, [])
+  const skipUntil = localStorage.getItem("skip_safety_tips_until")
+  if (skipUntil && Date.now() < parseInt(skipUntil, 10)) {
+    return "scanner"
+  }
+
+  return "safety-tips"
+}
+
+export function ScanFlow({ onClose }: ScanFlowProps) {
+  const [step, setStep] = useState<ScanStep>(getInitialScanStep)
+  const [scanResult, setScanResult] = useState<ScanResult | null>(null)
 
   const handleScanned = async (url: string) => {
     console.log("handleScanned triggered with URL:", url);
@@ -55,8 +57,6 @@ export function ScanFlow({ onClose }: ScanFlowProps) {
     setScanResult(item)
     setStep("result")
   }
-
-  if (!isInitialized) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
@@ -93,4 +93,3 @@ export function ScanFlow({ onClose }: ScanFlowProps) {
     </div>
   )
 }
-

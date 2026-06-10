@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ShieldX, ShieldAlert, ArrowLeft } from "lucide-react"
+import { ShieldAlert, ArrowLeft } from "lucide-react"
 import { BaseLayout } from "./BaseLayout"
 import { ResultUrl } from "./ResultUrl"
 import { ResultAction } from "./ResultAction"

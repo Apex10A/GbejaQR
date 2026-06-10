@@ -1,6 +1,6 @@
 "use client"
 
-import { Lock, Globe, Shield, Activity, Database, CheckCircle2, AlertTriangle, Info } from "lucide-react"
+import { Lock, Globe, Shield, Activity, Database } from "lucide-react"
 import { type ScanResult } from "@/lib/security"
 
 interface LinkDetailsProps {
@@ -110,6 +110,7 @@ export function LinkDetails({ result }: LinkDetailsProps) {
             </h3>
           </div>
           <div className="relative aspect-video rounded-xl overflow-hidden border border-border bg-muted">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src={analysis.visual_preview.screenshot_url} 
               alt="Site Preview" 

@@ -15,30 +15,35 @@ import {
 } from "@/components/scan-flow/result-views"
 import { UploadView } from "@/components/scan-flow/upload-view"
 import { HistoryView } from "@/components/scan-flow/history-view"
-import { Footer } from "@/components/footer"
 import { type ScanResult, type ScanHistoryItem, verifyUrl } from "@/lib/security"
 
 type ScanStep = "safety-tips" | "scanner" | "upload" | "verifying" | "result" | "history"
 
+function resolveInitialStep(stepParam: string | null): ScanStep {
+  if (stepParam === "history") return "history"
+
+  const skipUntil = localStorage.getItem("skip_safety_tips_until")
+  if (skipUntil && Date.now() < parseInt(skipUntil, 10)) {
+    return "scanner"
+  }
+
+  return "safety-tips"
+}
+
 function ScanPageContent() {
   const [step, setStep] = useState<ScanStep>("safety-tips")
-  const [scannedUrl, setScannedUrl] = useState<string>("")
   const [scanResult, setScanResult] = useState<ScanResult | null>(null)
   const [isInitialized, setIsInitialized] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    const skipUntil = localStorage.getItem("skip_safety_tips_until")
-    if (skipUntil && Date.now() < parseInt(skipUntil)) {
-      setStep("scanner")
-    }
-    
-    const stepParam = searchParams.get("step")
-    if (stepParam === "history") {
-      setStep("history")
-    }
-    setIsInitialized(true)
+    const timer = window.setTimeout(() => {
+      setStep(resolveInitialStep(searchParams.get("step")))
+      setIsInitialized(true)
+    }, 0)
+
+    return () => window.clearTimeout(timer)
   }, [searchParams])
 
   const goToHome = () => router.push("/")
@@ -52,7 +57,6 @@ function ScanPageContent() {
   }
 
   const handleScanned = async (url: string) => {
-    setScannedUrl(url)
     setStep("verifying")
     try {
       const result = await verifyUrl(url)

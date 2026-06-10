@@ -1,6 +1,6 @@
 "use client"
 
-import { ShieldX, AlertTriangle, ArrowLeft } from "lucide-react"
+import { AlertTriangle, ArrowLeft } from "lucide-react"
 import { BaseLayout } from "./BaseLayout"
 import { ResultUrl } from "./ResultUrl"
 import { ResultAction } from "./ResultAction"

@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Shield, MapPin, Users, Lock, Globe, ShieldCheck } from "lucide-react"
 
 const stats = [
   {
@@ -26,48 +25,15 @@ const stats = [
   },
 ]
 
-
-
+/*
 function AfricaMap() {
   return (
     <div className="relative flex h-64 w-64 items-center justify-center lg:h-80 lg:w-80">
-      <svg viewBox="0 0 200 220" className="h-full w-full" aria-hidden="true">
-        <path
-          d="M100,15 C90,15 78,22 72,32 C66,42 62,55 58,68 C54,78 48,88 45,100 C42,112 40,125 42,138 C44,150 48,162 55,172 C62,182 72,190 82,195 C90,198 98,200 105,197 C112,194 118,188 122,178 C126,168 130,155 134,142 C138,130 142,118 144,106 C146,94 148,82 145,70 C142,58 136,47 128,38 C120,29 112,22 105,18 C102,16 101,15 100,15 Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          className="text-primary/25"
-        />
-        <path
-          d="M100,15 C90,15 78,22 72,32 C66,42 62,55 58,68 C54,78 48,88 45,100 C42,112 40,125 42,138 C44,150 48,162 55,172 C62,182 72,190 82,195 C90,198 98,200 105,197 C112,194 118,188 122,178 C126,168 130,155 134,142 C138,130 142,118 144,106 C146,94 148,82 145,70 C142,58 136,47 128,38 C120,29 112,22 105,18 C102,16 101,15 100,15 Z"
-          fill="currentColor"
-          className="text-primary/5"
-        />
-        {[
-          { cx: 82, cy: 50, label: "Accra" },
-          { cx: 90, cy: 58, label: "Lagos" },
-          { cx: 115, cy: 75, label: "Nairobi" },
-          { cx: 88, cy: 95, label: "Kinshasa" },
-          { cx: 105, cy: 140, label: "Johannesburg" },
-          { cx: 95, cy: 30, label: "Cairo" },
-          { cx: 110, cy: 110, label: "Dar es Salaam" },
-        ].map((dot) => (
-          <g key={dot.label}>
-            <circle cx={dot.cx} cy={dot.cy} r="8" className="fill-primary/8" />
-            <circle cx={dot.cx} cy={dot.cy} r="4" className="fill-primary/20" />
-            <circle cx={dot.cx} cy={dot.cy} r="2" className="fill-primary animate-pulse" />
-          </g>
-        ))}
-        <line x1="82" y1="50" x2="90" y2="58" stroke="currentColor" strokeWidth="0.5" className="text-primary/15" />
-        <line x1="90" y1="58" x2="115" y2="75" stroke="currentColor" strokeWidth="0.5" className="text-primary/15" />
-        <line x1="115" y1="75" x2="110" y2="110" stroke="currentColor" strokeWidth="0.5" className="text-primary/15" />
-        <line x1="88" y1="95" x2="105" y2="140" stroke="currentColor" strokeWidth="0.5" className="text-primary/15" />
-      </svg>
-      <div className="absolute inset-0 rounded-full bg-primary/3 blur-[60px]" />
+      ...
     </div>
   )
 }
+*/
 
 export function Trust() {
   const [visible, setVisible] = useState(false)
