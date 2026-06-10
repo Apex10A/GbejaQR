@@ -1,10 +1,12 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Shield, ShieldCheck, Camera, ArrowRight } from "lucide-react"
+import { Shield, ShieldCheck, Camera, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
+import { useWaitlist } from "@/components/waitlist-provider"
+import { getPlatformStats, type PlatformStats } from "@/lib/stats"
 
 function PhoneMockup() {
   return (
@@ -102,6 +104,18 @@ function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: str
 }
 
 export function Hero({ onScanClick }: { onScanClick?: () => void }) {
+  const { isWaitlistMode, openWaitlist } = useWaitlist()
+  const [stats, setStats] = useState<PlatformStats | null>(null)
+
+  useEffect(() => {
+    getPlatformStats().then(setStats)
+  }, [])
+
+  const avgScanLabel =
+    stats && stats.avg_scan_time_ms > 0
+      ? `<${Math.ceil(stats.avg_scan_time_ms / 10) * 10}ms`
+      : "<200ms"
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden pt-24 lg:pt-20">
       <div className="absolute inset-0">
@@ -115,7 +129,7 @@ export function Hero({ onScanClick }: { onScanClick?: () => void }) {
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-4 py-1.5">
               <Shield className="h-4 w-4 text-primary" />
               <span className="text-xs font-medium text-primary font-mono uppercase tracking-wider">
-                Security-First QR Scanning
+                {isWaitlistMode ? "Coming Soon" : "Security-First QR Scanning"}
               </span>
             </div>
 
@@ -129,7 +143,16 @@ export function Hero({ onScanClick }: { onScanClick?: () => void }) {
             </p>
 
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
-              {onScanClick ? (
+              {isWaitlistMode ? (
+                <Button
+                  size="lg"
+                  onClick={openWaitlist}
+                  className="bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold text-base px-8 py-6 animate-glow-blue cursor-pointer"
+                >
+                  <Users className="mr-2 h-5 w-5" />
+                  Join the Waitlist
+                </Button>
+              ) : onScanClick ? (
                 <Button
                   size="lg"
                   onClick={onScanClick}
@@ -159,20 +182,20 @@ export function Hero({ onScanClick }: { onScanClick?: () => void }) {
 
         <div className="mt-20 grid grid-cols-2 gap-4 sm:gap-6 rounded-2xl border border-border bg-card/50 p-6 sm:p-8 lg:grid-cols-4 lg:gap-8">
           <div className="text-center">
-            <AnimatedCounter target={0} suffix="+" />
+            <AnimatedCounter key={`scans-${stats?.scans_protected}`} target={stats?.scans_protected ?? 0} suffix="+" />
             <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-medium">Scans Protected</p>
           </div>
           <div className="text-center">
-            <AnimatedCounter target={0} suffix="+" />
+            <AnimatedCounter key={`threats-${stats?.threats_blocked}`} target={stats?.threats_blocked ?? 0} suffix="+" />
             <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-medium">Threats Blocked</p>
           </div>
           <div className="text-center">
-            <AnimatedCounter target={0} />
+            <AnimatedCounter key={`countries-${stats?.african_countries}`} target={stats?.african_countries ?? 34} />
             <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-medium">African Countries</p>
           </div>
           <div className="text-center">
             <div className="text-2xl lg:text-3xl font-bold text-primary font-sans">
-              {"<"}200ms
+              {avgScanLabel}
             </div>
             <p className="mt-1 text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-medium">Avg. Scan Time</p>
           </div>

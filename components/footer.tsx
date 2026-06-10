@@ -1,6 +1,10 @@
-import { Shield, Camera, ArrowRight } from "lucide-react"
+"use client"
+
+import { Shield, Camera, ArrowRight, Users } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { useWaitlist } from "@/components/waitlist-provider"
+import { usePreviewAccess } from "@/components/use-preview-access"
 
 const footerLinks = {
   Product: ["Camera Scan", "Gallery Upload", "Threat Detection", "API Access"],
@@ -10,6 +14,10 @@ const footerLinks = {
 }
 
 export function Footer() {
+  const { isWaitlistMode, openWaitlist } = useWaitlist()
+  const previewActive = usePreviewAccess()
+  const showWaitlistCta = isWaitlistMode && !previewActive
+
   return (
     <footer className="border-t border-border bg-card/50">
       <div className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
@@ -21,19 +29,32 @@ export function Footer() {
               <Shield className="h-7 w-7 text-primary" />
             </div>
             <h2 className="mb-3 text-2xl font-bold text-foreground lg:text-3xl font-sans text-balance">
-              Ready to scan with confidence?
+              {showWaitlistCta ? "Be first in line when we launch" : "Ready to scan with confidence?"}
             </h2>
             <p className="mb-6 text-muted-foreground max-w-md mx-auto">
-              No sign-up. No downloads. Just open, scan, and stay safe.
+              {showWaitlistCta
+                ? "Join the waitlist for early access to the safest QR scanner built for Africa."
+                : "No sign-up. No downloads. Just open, scan, and stay safe."}
             </p>
-            <Link
-              href="/scan"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/85 font-sans animate-glow-blue"
-            >
-              <Camera className="h-5 w-5" />
-              Start Scanning
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            {showWaitlistCta ? (
+              <button
+                onClick={openWaitlist}
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/85 font-sans animate-glow-blue"
+              >
+                <Users className="h-5 w-5" />
+                Join the Waitlist
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            ) : (
+              <Link
+                href="/scan"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/85 font-sans animate-glow-blue"
+              >
+                <Camera className="h-5 w-5" />
+                Start Scanning
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            )}
           </div>
         </div>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
