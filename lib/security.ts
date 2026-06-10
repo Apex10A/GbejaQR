@@ -1,8 +1,40 @@
 export type SecurityStatus = "verified" | "suspicious" | "malicious" | "unsafe" | "error"
 
 export interface ScanAnalysis {
+  heuristics?: {
+    is_https?: boolean
+    homograph?: {
+      suspicious?: boolean
+      decoded_name?: string
+      is_idn?: boolean
+    }
+    typosquatting?: {
+      is_typo?: boolean
+    }
+    entropy_score?: string | number
+    is_high_risk_tld?: boolean
+  }
+  resolution?: {
+    was_redirected?: boolean
+  }
+  ssl?: {
+    valid?: boolean
+    issuer?: string
+  }
+  ip_reputation?: {
+    ip?: string
+    reputation?: {
+      isp?: string
+      country?: string
+      abuse_score?: string | number
+    }
+  }
   threat_database?: {
+    is_malicious?: boolean
     reason?: string
+  }
+  visual_preview?: {
+    screenshot_url?: string
   }
 }
 
