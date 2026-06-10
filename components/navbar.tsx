@@ -6,10 +6,15 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useWaitlist } from "@/components/waitlist-provider"
+import { usePreviewAccess } from "@/components/use-preview-access"
 
 export function Navbar({ onScanClick, onHistoryClick }: { onScanClick?: () => void; onHistoryClick?: () => void }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname()
+  const { isWaitlistMode } = useWaitlist()
+  const previewActive = usePreviewAccess()
+  const showProductLinks = !isWaitlistMode || onScanClick || previewActive
 
   const handleScanClick = () => {
     if (onScanClick) {
@@ -48,14 +53,16 @@ export function Navbar({ onScanClick, onHistoryClick }: { onScanClick?: () => vo
           >
             How it works
           </Link>
-          {onHistoryClick ? (
-            <button onClick={handleHistoryClick} className="text-sm font-medium text-secondary transition-colors hover:text-primary">
-              History
-            </button>
-          ) : (
-            <Link href="/scan?step=history" className="text-sm font-medium text-secondary transition-colors hover:text-primary">
-              History
-            </Link>
+          {showProductLinks && (
+            onHistoryClick ? (
+              <button onClick={handleHistoryClick} className="text-sm font-medium text-secondary transition-colors hover:text-primary">
+                History
+              </button>
+            ) : (
+              <Link href="/scan?step=history" className="text-sm font-medium text-secondary transition-colors hover:text-primary">
+                History
+              </Link>
+            )
           )}
           <Link 
             href="/#trust" 
@@ -66,24 +73,26 @@ export function Navbar({ onScanClick, onHistoryClick }: { onScanClick?: () => vo
           </Link>
         </div>
 
-        <div className="hidden lg:block">
-          {onScanClick ? (
-            <Button 
-              onClick={handleScanClick}
-              className="bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold px-6"
-            >
-              <Shield className="mr-2 h-4 w-4" />
-              Scan Now
-            </Button>
-          ) : (
-            <Link href="/scan">
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold px-6">
+        {showProductLinks && (
+          <div className="hidden lg:block">
+            {onScanClick ? (
+              <Button 
+                onClick={handleScanClick}
+                className="bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold px-6"
+              >
                 <Shield className="mr-2 h-4 w-4" />
                 Scan Now
               </Button>
-            </Link>
-          )}
-        </div>
+            ) : (
+              <Link href="/scan">
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold px-6">
+                  <Shield className="mr-2 h-4 w-4" />
+                  Scan Now
+                </Button>
+              </Link>
+            )}
+          </div>
+        )}
 
         <button
           className="flex lg:hidden items-center justify-center text-foreground"
@@ -106,20 +115,22 @@ export function Navbar({ onScanClick, onHistoryClick }: { onScanClick?: () => vo
           >
             How it works
           </Link>
-          {onHistoryClick ? (
-            <button 
-              className="flex py-3 text-sm font-medium text-secondary hover:text-primary active:bg-zinc-100 rounded-lg px-2 transition-colors text-left" 
-              onClick={() => {
-                handleHistoryClick()
-                setMobileOpen(false)
-              }}
-            >
-              History
-            </button>
-          ) : (
-            <Link href="/scan?step=history" className="flex py-3 text-sm font-medium text-secondary hover:text-primary active:bg-zinc-100 rounded-lg px-2 transition-colors" onClick={() => setMobileOpen(false)}>
-              History
-            </Link>
+          {showProductLinks && (
+            onHistoryClick ? (
+              <button 
+                className="flex py-3 text-sm font-medium text-secondary hover:text-primary active:bg-zinc-100 rounded-lg px-2 transition-colors text-left" 
+                onClick={() => {
+                  handleHistoryClick()
+                  setMobileOpen(false)
+                }}
+              >
+                History
+              </button>
+            ) : (
+              <Link href="/scan?step=history" className="flex py-3 text-sm font-medium text-secondary hover:text-primary active:bg-zinc-100 rounded-lg px-2 transition-colors" onClick={() => setMobileOpen(false)}>
+                History
+              </Link>
+            )
           )}
           <Link 
             href="/#trust" 
@@ -131,27 +142,29 @@ export function Navbar({ onScanClick, onHistoryClick }: { onScanClick?: () => vo
           >
             Why GbejaQR
           </Link>
-          <div className="pt-4">
-          {onScanClick ? (
-            <Button 
-              onClick={() => {
-                handleScanClick()
-                setMobileOpen(false)
-              }}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold py-6 text-base"
-            >
-              <Shield className="mr-2 h-5 w-5" />
-              Scan Now
-            </Button>
-          ) : (
-            <Link href="/scan" onClick={() => setMobileOpen(false)}>
-              <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold py-6 text-base">
-                <Shield className="mr-2 h-5 w-5" />
-                Scan Now
-              </Button>
-            </Link>
+          {showProductLinks && (
+            <div className="pt-4">
+              {onScanClick ? (
+                <Button 
+                  onClick={() => {
+                    handleScanClick()
+                    setMobileOpen(false)
+                  }}
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold py-6 text-base"
+                >
+                  <Shield className="mr-2 h-5 w-5" />
+                  Scan Now
+                </Button>
+              ) : (
+                <Link href="/scan" onClick={() => setMobileOpen(false)}>
+                  <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/85 font-sans font-semibold py-6 text-base">
+                    <Shield className="mr-2 h-5 w-5" />
+                    Scan Now
+                  </Button>
+                </Link>
+              )}
+            </div>
           )}
-          </div>
         </div>
       )}
     </nav>

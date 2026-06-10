@@ -181,3 +181,7 @@
   background-size: 200% 100%;
   animation: shimmer 3s ease-in-out infinite;
 }
+
+body[data-preview-banner="true"] main {
+  padding-top: 2.5rem;
+}
