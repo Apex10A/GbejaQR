@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useState, useRef } from "react"
-import { Upload, Image, X } from "lucide-react"
+import { Upload, Image as ImageIcon, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 interface UploadViewProps {
@@ -89,7 +89,7 @@ export function UploadView({ onUploaded, onCancel }: UploadViewProps) {
               {fileName ? (
                 <>
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-safe/15 mb-4">
-                    <Image className="h-7 w-7 text-safe" />
+                    <ImageIcon className="h-7 w-7 text-safe" aria-hidden="true" />
                   </div>
                   <p className="text-sm font-medium text-foreground font-sans">{fileName}</p>
                   <p className="mt-1 text-xs text-safe">QR code uploaded successfully</p>

@@ -1,18 +1,36 @@
 export type SecurityStatus = "verified" | "suspicious" | "malicious" | "unsafe" | "error"
 
+export interface ScanAnalysis {
+  threat_database?: {
+    reason?: string
+  }
+}
+
+export interface ScanSiteInfo {
+  title: string
+  description: string
+  og_image: string
+  category: string
+}
+
+export interface ApiScanResponse {
+  url?: string
+  is_safe: boolean
+  safety_score: number
+  advice?: string
+  site_info?: ScanSiteInfo
+  analysis?: ScanAnalysis
+  history_id?: string
+}
+
 export interface ScanResult {
   url: string
   status: SecurityStatus
   is_safe: boolean
   safety_score: number
   advice: string
-  site_info?: {
-    title: string
-    description: string
-    og_image: string
-    category: string
-  }
-  analysis?: any
+  site_info?: ScanSiteInfo
+  analysis?: ScanAnalysis
   history_id?: string
   threatType?: string
   threatLevel?: number
@@ -23,6 +41,35 @@ export interface ScanHistoryItem extends ScanResult {
   id: string
   scanned_at: string
   cached_result: boolean
+}
+
+export interface ApiHistoryItem extends ApiScanResponse {
+  id: string
+  scanned_at: string
+  cached_result: boolean
+}
+
+function getPublisher(item: Pick<ApiScanResponse, "site_info">, fallbackUrl: string) {
+  const category = item.site_info?.category
+  const description = item.site_info?.description
+
+  if (category && category.toLowerCase() !== "unknown") {
+    return category
+  }
+
+  if (description && description.toLowerCase() !== "unknown") {
+    return description
+  }
+
+  if (fallbackUrl) {
+    try {
+      return new URL(fallbackUrl).hostname.split(".").slice(-2, -1)[0].toUpperCase()
+    } catch {
+      // ignore invalid URLs
+    }
+  }
+
+  return "Publisher"
 }
 
 export async function verifyUrl(url: string): Promise<ScanResult> {
@@ -51,7 +98,7 @@ export async function verifyUrl(url: string): Promise<ScanResult> {
       throw new Error(`Failed to scan URL: ${response.statusText}`);
     }
 
-    const data = await response.json()
+    const data: ApiScanResponse = await response.json()
     
     let status: SecurityStatus = "verified"
     if (!data.is_safe) {
@@ -60,34 +107,13 @@ export async function verifyUrl(url: string): Promise<ScanResult> {
       status = "suspicious"
     }
 
-    const getPublisher = (item: any, fallbackUrl: string) => {
-      const category = item.site_info?.category;
-      const description = item.site_info?.description;
-      
-      if (category && category.toLowerCase() !== "unknown") {
-        return category;
-      }
-      
-      if (description && description.toLowerCase() !== "unknown") {
-        return description;
-      }
-      
-      if (fallbackUrl) {
-        try {
-          return new URL(fallbackUrl).hostname.split(".").slice(-2, -1)[0].toUpperCase();
-        } catch (err) {
-          console.warn("Error parsing URL for publisher:", err);
-        }
-      }
-      
-      return "Publisher";
-    };
-
     const publisher = getPublisher(data, url);
 
     return {
       ...data,
+      url: data.url ?? url,
       status,
+      advice: data.advice ?? "",
       threatType: data.is_safe ? undefined : (data.analysis?.threat_database?.reason || "Malicious Link"),
       threatLevel: Math.ceil((100 - (data.safety_score || 0)) / 20),
       publisher,
@@ -104,7 +130,6 @@ export async function verifyUrl(url: string): Promise<ScanResult> {
     }
   }
 }
-{/*heyo man*/}
 
 export async function getHistory(): Promise<ScanHistoryItem[]> {
   const historyUrl = process.env.NEXT_PUBLIC_HISTORY_API_URL;
@@ -112,44 +137,24 @@ export async function getHistory(): Promise<ScanHistoryItem[]> {
     console.warn("History API URL missing");
     return [];
   }
-  
-  const getPublisher = (item: any, fallbackUrl: string) => {
-    const category = item.site_info?.category;
-    const description = item.site_info?.description;
-    
-    if (category && category.toLowerCase() !== "unknown") {
-      return category;
-    }
-    
-    if (description && description.toLowerCase() !== "unknown") {
-      return description;
-    }
-    
-    if (fallbackUrl) {
-      try {
-        return new URL(fallbackUrl).hostname.split(".").slice(-2, -1)[0].toUpperCase();
-      } catch (err) {
-      }
-    }
-    
-    return "Publisher";
-  };
 
   try {
     const response = await fetch(historyUrl);
     if (!response.ok) throw new Error("Failed to fetch history");
-    const data = await response.json();
+    const data: ApiHistoryItem[] = await response.json();
     
-    return data.map((item: any) => {
+    return data.map((item) => {
       let status: SecurityStatus = "verified";
       if (!item.is_safe) status = "malicious";
       else if (item.safety_score < 70) status = "suspicious";
       
-      const publisher = getPublisher(item, item.url);
+      const publisher = getPublisher(item, item.url ?? "");
 
       return {
         ...item,
+        url: item.url ?? "",
         status,
+        advice: item.advice ?? "",
         threatType: item.is_safe ? undefined : (item.analysis?.threat_database?.reason || "Malicious Link"),
         threatLevel: Math.ceil((100 - (item.safety_score || 0)) / 20),
         publisher,

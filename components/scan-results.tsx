@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import {
   ShieldCheck,
   AlertTriangle,
-  ShieldAlert,
   ExternalLink,
   ArrowRight,
   Info,

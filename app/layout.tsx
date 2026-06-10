@@ -3,8 +3,15 @@ import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import { PreviewAccess } from '@/components/preview-access'
 import './globals.css'
 
-const _spaceGrotesk = Space_Grotesk({ subsets: ['latin'] })
-const _jetbrainsMono = JetBrains_Mono({ subsets: ['latin'] })
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space-grotesk',
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains-mono',
+})
 
 export const metadata: Metadata = {
   title: 'GbejaQR - Scan QR Codes with Confidence',
@@ -43,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans antialiased bg-zinc-50">
         <PreviewAccess />
         {children}

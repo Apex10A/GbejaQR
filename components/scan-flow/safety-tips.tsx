@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Shield, Search, Link2, ShieldCheck } from "lucide-react"
+import { Search, Link2, ShieldCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
@@ -102,7 +102,7 @@ QR codes.
                 onCheckedChange={(checked) => setSkipFor7Days(!!checked)}
               />
               <Label htmlFor="skip-tips" className="text-sm text-muted-foreground cursor-pointer">
-                Don't show these tips for the next 7 days
+                Don&apos;t show these tips for the next 7 days
               </Label>
             </div>
             <p className="mb-4 text-center text-xs text-muted-foreground">

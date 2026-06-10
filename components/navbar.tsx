@@ -64,6 +64,7 @@ export function Navbar({ onScanClick, onHistoryClick }: { onScanClick?: () => vo
               </Link>
             )
           )}
+          {!isWaitlistMode && (
           <Link 
             href="/#trust" 
             className="text-sm font-medium text-secondary transition-colors hover:text-primary"
@@ -71,6 +72,7 @@ export function Navbar({ onScanClick, onHistoryClick }: { onScanClick?: () => vo
           >
             Why GbejaQR
           </Link>
+          )}
         </div>
 
         {showProductLinks && (
@@ -132,6 +134,7 @@ export function Navbar({ onScanClick, onHistoryClick }: { onScanClick?: () => vo
               </Link>
             )
           )}
+          {!isWaitlistMode && (
           <Link 
             href="/#trust" 
             className="flex py-3 text-sm font-medium text-secondary hover:text-primary active:bg-zinc-100 rounded-lg px-2 transition-colors" 
@@ -142,6 +145,7 @@ export function Navbar({ onScanClick, onHistoryClick }: { onScanClick?: () => vo
           >
             Why GbejaQR
           </Link>
+          )}
           {showProductLinks && (
             <div className="pt-4">
               {onScanClick ? (

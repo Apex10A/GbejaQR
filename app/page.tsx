@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/navbar"
 import { Hero } from "@/components/hero"
 import { HowItWorks } from "@/components/how-it-works"
-import { Trust } from "@/components/trust"
+// import { Trust } from "@/components/trust"
 import { Footer } from "@/components/footer"
 import { WaitlistProvider } from "@/components/waitlist-provider"
 
@@ -16,9 +16,11 @@ export default function Page() {
         <div className="border-t border-border">
           <HowItWorks />
         </div>
+        {/* Why GbejaQR — hidden during waitlist (dummy stats). Re-enable at launch.
         <div className="border-t border-border">
           <Trust />
         </div>
+        */}
         <Footer />
       </main>
     </WaitlistProvider>
