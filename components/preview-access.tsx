@@ -67,7 +67,7 @@ function PreviewAccessContent() {
       )}
 
       <Dialog open={showUnlockDialog} onOpenChange={setShowUnlockDialog}>
-        <DialogContent className="max-w-md rounded-2xl border-border text-center">
+        <DialogContent className="w-[calc(100%-2rem)] max-w-[calc(100%-2rem)] sm:w-full sm:max-w-md rounded-2xl border-border text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/15 border border-primary/20">
             <Eye className="h-8 w-8 text-primary" />
           </div>
