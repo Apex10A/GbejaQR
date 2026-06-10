@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_PUBLIC_LAUNCH_MODE: waitlist
+  PREVIEW_SECRET: ci-preview-secret
+  PREVIEW_COOKIE_DAYS: 7
+  NEXT_PUBLIC_SCAN_API_URL: https://gbeja-qr.vercel.app/api/scan
+  NEXT_PUBLIC_HISTORY_API_URL: https://gbeja-qr.vercel.app/api/history
+  NEXT_PUBLIC_WAITLIST_API_URL: https://gbeja-qr.vercel.app/api/waitlist
+  NEXT_PUBLIC_METRICS_API_URL: https://gbeja-qr.vercel.app/api/metrics
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint

@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useCallback, useContext, useEffect, useState } from "react"
+import { createContext, useCallback, useContext, useState } from "react"
 import { CheckCircle2, Mail } from "lucide-react"
 import {
   Dialog,
@@ -38,22 +38,14 @@ export function useWaitlist() {
 
 export function WaitlistProvider({ children }: { children: React.ReactNode }) {
   const waitlistMode = isWaitlistMode()
-  const [hasJoined, setHasJoined] = useState(false)
-  const [showSignup, setShowSignup] = useState(false)
+  const [hasJoined, setHasJoined] = useState(() => hasJoinedWaitlist())
+  const [showSignup, setShowSignup] = useState(() => {
+    if (!isWaitlistMode()) return false
+    return !hasJoinedWaitlist() && !hasDismissedWaitlist() && !hasPreviewAccess()
+  })
   const [showSuccess, setShowSuccess] = useState(false)
   const [joinedName, setJoinedName] = useState("")
   const [joinedEmail, setJoinedEmail] = useState("")
-
-  useEffect(() => {
-    if (!waitlistMode) return
-
-    const joined = hasJoinedWaitlist()
-    setHasJoined(joined)
-
-    if (!joined && !hasDismissedWaitlist() && !hasPreviewAccess()) {
-      setShowSignup(true)
-    }
-  }, [waitlistMode])
 
   const openWaitlist = useCallback(() => {
     if (!waitlistMode) return
