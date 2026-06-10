@@ -2,7 +2,6 @@
 
 import { Suspense, useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import Link from "next/link"
 import { Eye, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {

@@ -13,7 +13,8 @@ const DEFAULT_STATS: PlatformStats = {
 }
 
 export async function getPlatformStats(): Promise<PlatformStats> {
-  const apiUrl = process.env.NEXT_PUBLIC_STATS_API_URL
+  const apiUrl =
+    process.env.NEXT_PUBLIC_METRICS_API_URL ?? process.env.NEXT_PUBLIC_STATS_API_URL
 
   if (!apiUrl) {
     return DEFAULT_STATS

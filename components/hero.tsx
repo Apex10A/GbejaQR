@@ -111,10 +111,12 @@ export function Hero({ onScanClick }: { onScanClick?: () => void }) {
     getPlatformStats().then(setStats)
   }, [])
 
-  const avgScanLabel =
-    stats && stats.avg_scan_time_ms > 0
-      ? `<${Math.ceil(stats.avg_scan_time_ms / 10) * 10}ms`
-      : "<200ms"
+  const avgScanLabel = (() => {
+    const ms = stats?.avg_scan_time_ms ?? 0
+    if (ms <= 0) return "<200ms"
+    if (ms >= 1000) return `${(ms / 1000).toFixed(1)}s`
+    return `<${Math.ceil(ms / 10) * 10}ms`
+  })()
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden pt-24 lg:pt-20">
