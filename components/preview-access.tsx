@@ -46,7 +46,7 @@ function PreviewAccessContent() {
   return (
     <>
       {previewActive && (
-        <div className="fixed top-[73px] left-0 right-0 z-40 border-b border-primary/20 bg-primary/10 px-4 py-2">
+        <div className="fixed top-[73px] left-0 right-0 z-40 border-b border-primary/20 bg-white/95 backdrop-blur-xl shadow-sm px-4 py-2.5 supports-[backdrop-filter]:bg-white/90">
           <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
             <div className="flex items-center gap-2 text-sm text-secondary">
               <span>
