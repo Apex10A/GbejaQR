@@ -7,10 +7,10 @@ import { useWaitlist } from "@/components/waitlist-provider"
 import { usePreviewAccess } from "@/components/use-preview-access"
 
 const footerLinks = {
-  Product: ["Camera Scan", "Gallery Upload", "Threat Detection", "API Access"],
-  Resources: ["Documentation", "Blog", "Security Reports", "Status"],
-  Company: ["About", "Contact", "Careers", "Press"],
-  Legal: ["Privacy Policy", "Terms of Service", "Cookie Policy"],
+  Product: ["API Access"],
+  Resources: ["Blog", "Security Reports"],
+  Company: ["About", "Contact"],
+  Legal: ["Privacy Policy", "Terms of Service"],
 }
 
 export function Footer() {
